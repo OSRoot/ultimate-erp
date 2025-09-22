@@ -1,16 +1,17 @@
-  <header class="titlebar">
-  <div class="app-title">Ultimate ERP</div>
+<div class="main-app-window">
 
+  @if (showHeader()){
+    <header class="titlebar">
+      <div class="app-title">SYSTEM</div>
 
-  <div class="window-controls">
-    <button id="min-btn" (click)="clickTest()">–</button>
-    <button id="max-btn" (click)="electronService.toggleMaximize()">⬜</button>
-    <button id="close-btn" (click)="electronService.close()">✕</button>
-  </div>
-</header>
+      <div class="window-controls">
+        <button id="min-btn" (click)="clickTest()">–</button>
+        <button id="max-btn" (click)="electronService.toggleMaximize()">🔳</button>
+        <button id="close-btn" (click)="electronService.close()">✕</button>
+      </div>
+    </header>
+  }
 
+  <router-outlet></router-outlet>
 
-    <button (click)="electronService.close()">
-      close
-    </button>
-<router-outlet></router-outlet>
+</div>

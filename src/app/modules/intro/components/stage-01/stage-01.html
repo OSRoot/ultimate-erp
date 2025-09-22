@@ -1,0 +1,28 @@
+<div class="stage-01-wrapper" [class.enter-active]="isVisible()">
+
+  <div class="stage-01-titlebar">
+    <div class="title">STAGE</div>
+    <div class="window-controls">
+      <button (mouseenter)="playHoverSound()">–</button>
+      <button (mouseenter)="playHoverSound()">▢</button>
+      <button (mouseenter)="playHoverSound()">✕</button>
+    </div>
+  </div>
+
+  <div class="stage-01-header">
+    <div class="head"></div>
+    <h1>Welcome to Stage 01</h1>
+    <div class="tail"></div>
+  </div>
+
+  <div class="stage-01-container">
+    <p>You have the chance to be a Player.</p>
+    <p>Do you accept?</p>
+
+    <div class="stage-01-buttons">
+      <button mat-flat-button color="primary" (mouseleave)="playLeaveClickSound()"  (mouseenter)="playHoverSound()">Accept</button>
+      <button mat-flat-button color="warn" (mouseleave)="playLeaveClickSound()" (mouseenter)="playHoverSound()">Decline</button>
+    </div>
+  </div>
+
+</div>

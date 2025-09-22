@@ -1,0 +1,156 @@
+.stage-01-wrapper {
+  opacity: 0; // invisible state
+  transform: translate(-50%, -50%) scale(0.9); /* <-- add scale */
+  transition: opacity 0.8s ease, transform 0.8s ease; /* <-- transition here */
+  position: relative;
+  top: 40%;
+  left: 50%;
+  width: 800px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+
+  /* Glassy hologram window */
+  background: rgba(8, 20, 30, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 2px solid rgba(0, 255, 255, 0.6);
+  border-radius: 12px;
+  box-shadow:
+    0 0 14px rgba(0,255,255,0.3),
+    0 0 30px rgba(0,255,255,0.25),
+    inset 0 0 10px rgba(0,255,255,0.25);
+
+  color: #e0ffff;
+  overflow: hidden;
+}
+
+/* Titlebar */
+.stage-01-titlebar {
+  -webkit-app-region: drag;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 38px;
+  padding: 0 12px;
+
+  background: rgba(0, 30, 40, 0.6);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  font-size: 0.9rem;
+  font-family: "medium-latin";
+  font-weight: 600;
+  color: #aefcff;
+  letter-spacing: 1px;
+
+  text-shadow: 0 0 6px cyan;
+}
+
+/* Window controls */
+.stage-01-titlebar .window-controls {
+  display: flex;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.stage-01-titlebar .window-controls button {
+  background: transparent;
+  border: 1px solid rgba(0,255,255,0.3);
+  color: #aefcff;
+  border-radius: 4px;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  text-shadow: 0 0 6px cyan;
+}
+
+.stage-01-titlebar .window-controls button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 8px cyan;
+}
+
+/* Header inside window */
+.stage-01-header {
+  margin:auto;
+  width: 500px;
+  padding: 16px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.stage-01-header h1 {
+  font-family: "bold-latin";
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow:
+    0 0 8px cyan,
+    0 0 16px rgba(0, 255, 255, 0.8),
+    0 0 28px rgba(0, 255, 255, 0.6);
+  // margin: 0;
+  animation: textPulse 3s infinite alternate;
+}
+
+.stage-01-header .head,
+.stage-01-header .tail {
+  width: 70%;
+  height: 3px;
+  margin: 12px auto;
+  background: linear-gradient(90deg, transparent, cyan, transparent);
+  border-radius: 2px;
+  animation: glowLine 2s infinite alternate;
+}
+.stage-01-header .tail { animation-direction: alternate-reverse; }
+
+/* Content */
+.stage-01-container {
+  flex: 1;
+  text-align: center;
+  padding: 16px 24px;
+}
+.stage-01-container p {
+  margin: 0;
+  line-height: 2;
+  font-size: 1.4rem;
+  color: #dff;
+  font-family: "medium-latin";
+}
+
+/* Buttons */
+.stage-01-buttons {
+  margin-top: 20px;
+}
+.stage-01-buttons button {
+  margin: 16px;
+  padding: 10px 24px;
+  min-width: 150px;
+  min-height: 45px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,255,255,0.4);
+  background: rgba(0, 40, 50, 0.4);
+  color: #e0ffff;
+  text-shadow: 0 0 8px cyan;
+  transition: all 0.3s ease;
+}
+.stage-01-buttons button:hover {
+  cursor: pointer;
+  box-shadow:
+    0 0 10px rgba(0,255,255,0.6),
+    0 0 10px rgba(0,255,255,0.4);
+  transform: scale(1.01);
+}
+
+/* Animations */
+@keyframes glowLine {
+  from { box-shadow: 0 0 6px cyan; opacity: 0.6; }
+  to   { box-shadow: 0 0 18px cyan; opacity: 1; }
+}
+@keyframes textPulse {
+  from { text-shadow: 0 0 6px cyan, 0 0 14px rgba(0,255,255,0.7); }
+  to   { text-shadow: 0 0 12px cyan, 0 0 28px rgba(0,255,255,1); }
+}
+.stage-01-wrapper.enter-active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }

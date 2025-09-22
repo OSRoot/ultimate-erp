@@ -1,24 +1,52 @@
 .titlebar {
-  -webkit-app-region: drag;       /* makes this area draggable */
+  -webkit-app-region: drag;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2d2d2d;
-  color: white;
-  padding: 5px 10px;
-  height: 32px;
-}
 
-.window-controls {
-  display: flex;
-  gap: 10px;
-  -webkit-app-region: no-drag;    /* buttons must not be draggable */
+  height: 36px;
+  padding: 4px 12px;
+
+  background: rgba(10, 25, 35, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-bottom: 1px solid rgba(0, 255, 255, 0.4);
+
+  color: #e0ffff;
+  letter-spacing: 1px;
+
+  animation: fadeInDown 0.3s ease-in-out;
 }
 
 .window-controls button {
   background: transparent;
   border: none;
-  color: white;
+  color: #e0ffff;
   cursor: pointer;
   padding: 0 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.window-controls button:hover {
+  color: cyan;
+  text-shadow: 0 0 2px rgba(0, 255, 255, 0.286), 0 0 4px rgba(0,255,255,0.2);
+}
+.app-title {
+  font-weight: 600;
+  text-shadow: 0 0 4px rgba(0, 255, 255, 0.435), 0 0 2px rgba(0,255,255,0.2);
+  animation: titlePulse 3s infinite alternate;
+}
+
+@keyframes titlePulse {
+  from { text-shadow: 0 0 4px cyan, 0 0 8px rgba(0,255,255,0.6); }
+  to   { text-shadow: 0 0 8px cyan, 0 0 16px rgba(0,255,255,1); }
+}
+.titlebar::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.455), transparent);
 }

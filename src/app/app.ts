@@ -10,10 +10,16 @@ import { OSELECTRON_SERVICE } from './core/services/electron.service';
 export class App {
   protected readonly title = signal('ultimate-erp');
   public electronService   = inject(OSELECTRON_SERVICE);
-  constructor() {}
+  public showHeader        = signal(false);
+
+  constructor() {
+    setTimeout(() => {
+      this.showHeader.set(true);
+    }, 1000);
+  }
 
   clickTest(){
       console.log("Angular button click fired");
-    this.electronService.minimize();
+      this.electronService.minimize();
   }
 }

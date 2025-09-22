@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-
+@import 'animate.css';
 //****************************************************************************************************************//
 //************************************************** Default Arabic Font *****************************************//
 //****************************************************************************************************************//
@@ -72,4 +72,24 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+div.main-app-window {
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    #11212d 75%,    /* darker */
+    #06141b 100%    /* abyss */
+  );
+}
+
+div.main-app-window::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: 0;
+}
 
