@@ -1,0 +1,24 @@
+.titlebar {
+  -webkit-app-region: drag;       /* makes this area draggable */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2d2d2d;
+  color: white;
+  padding: 5px 10px;
+  height: 32px;
+}
+
+.window-controls {
+  display: flex;
+  gap: 10px;
+  -webkit-app-region: no-drag;    /* buttons must not be draggable */
+}
+
+.window-controls button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0 8px;
+}

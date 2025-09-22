@@ -1,5 +1,6 @@
 {
   "name": "ultimate-erp",
+  "main": "dist/electron/main.js",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +8,27 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:ultimate-erp": "node dist/ultimate-erp/server/server.mjs"
+    "serve:ssr:ultimate-erp": "node dist/ultimate-erp/server/server.mjs",
+    "electron:build": "tsc -p electron/tsconfig.json",
+    "electron:start": "npm run build && npm run electron:build && electron ./dist/electron/main.js",
+    "electron:dev": "concurrently \"ng serve\" \"tsc -w -p electron/tsconfig.json\" \"wait-on http://localhost:4200 && electron ./dist/electron/main.js\"",
+    "electron:package": "npm run build && npm run electron:build && electron-builder"
+  },
+  "build": {
+    "appId": "osroot.erp",
+    "productName": "OS-ERP",
+    "files": [
+      "dist/**/*",
+      "dist/electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./build/icon.ico",
+      "signAndEditExecutable": false
+    }
   },
   "prettier": {
     "printWidth": 100,
@@ -43,15 +64,19 @@
     "@angular/build": "^20.2.1",
     "@angular/cli": "^20.2.1",
     "@angular/compiler-cli": "^20.2.0",
+    "@capacitor-community/electron": "^5.0.1",
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "concurrently": "^9.2.1",
+    "electron": "^38.1.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "wait-on": "^8.0.5"
   }
 }

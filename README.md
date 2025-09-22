@@ -16,3 +16,4 @@
 
 ### Theme Configuration
   - Created ` scr/theme/variables.scss `
+  - Modified ` variables.scss ` to add theme, fonts, and other custom css variables 

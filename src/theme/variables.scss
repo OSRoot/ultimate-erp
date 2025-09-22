@@ -1,0 +1,198 @@
+:root{
+
+  //****************************************************************************************************************//
+  // ********************************************** Shared Variables ***********************************************//
+  //****************************************************************************************************************//
+  --transition-all-300-ease : all 0.3s ease;
+  --transition-300 : all 0.3s ease;
+  --transition-300 : all 0.3s ease;
+  --transition-300 : all 0.3s ease;
+  --transition-300 : all 0.3s ease;
+
+  //****************************************************************************************************************//
+  // ********************************************** COLORS AND FONTFAMILY ******************************************//
+  //****************************************************************************************************************//
+  /* Brand Colors */
+  --color-primary: #007bff;
+  --color-primary-light: #3399ff;
+  --color-primary-dark: #0056b3;
+
+  --color-secondary: #6c757d;
+  --color-secondary-light: #a6acaf;
+  --color-secondary-dark: #494f54;
+
+  --color-accent: #ff4081;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  --color-info: #17a2b8;
+
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-100: #f8f9fa;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #dee2e6;
+  --color-gray-400: #ced4da;
+  --color-gray-500: #adb5bd;
+  --color-gray-600: #6c757d;
+  --color-gray-700: #495057;
+  --color-gray-800: #343a40;
+  --color-gray-900: #212529;
+
+  /* Backgrounds */
+  --background-default: var(--color-white);
+  --background-alt: var(--color-gray-100);
+  --background-inverse: var(--color-black);
+
+  /* Text Colors */
+  --text-primary: var(--color-gray-900);
+  --text-secondary: var(--color-gray-700);
+  --text-muted: var(--color-gray-500);
+  --text-inverse: var(--color-white);
+
+  /* Border Colors */
+  --border-color: var(--color-gray-300);
+  --border-color-light: var(--color-gray-200);
+  --border-color-dark: var(--color-gray-400);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-lg: 0 4px 8px rgba(0,0,0,0.15);
+
+  /* Default Font Families */
+  --font-family-regular: "regular-latin";
+  --font-family-medium: "medium-latin";
+  --font-family-bold: "bold-latin";
+
+  /* Arabic Font Families */
+  --font-family-regular-ar: "regular-arabic";
+  --font-family-medium-ar: "medium-arabic";
+  --font-family-bold-ar: "bold-arabic";
+
+  /* Latin Font Families */
+  --font-family-regular-lat: "regular-latin";
+  --font-family-medium-lat: "medium-latin";
+  --font-family-bold-lat: "bold-latin";
+
+  /* Dynamic */
+  --font-family-base: var(--font-family-regular);
+  --font-family-heading: var(--font-family-bold);
+  --font-family-ui: var(--font-family-medium);
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+
+  /* Line Heights */
+  --line-height-sm: 1.2;
+  --line-height-md: 1.5;
+  --line-height-lg: 1.8;
+
+
+  //****************************************************************************************************************//
+  // ************************************************* Header Variables ********************************************//
+  //****************************************************************************************************************//
+ /* Layout */
+  --header-height: 70px;
+  --header-min-height: 50px;
+  --header-max-height: 120px;
+  --header-width: 100%;
+  --header-max-width: 100%;
+  --header-position: relative; /* sticky, fixed, absolute */
+  --header-z-index: 1000;
+
+  /* Background & Borders */
+  --header-background-color: #eee;
+  --header-background-gradient: linear-gradient(to right, #eee, #ddd);
+  --header-border: 1px solid #ccc;
+  --header-border-radius: 0; /* for rounded headers */
+  --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Spacing */
+  --header-padding: 1rem;
+  --header-padding-inline: 1rem;
+  --header-padding-block: 1rem;
+  --header-gap: 0.5rem; /* spacing between items */
+  --header-margin: 0;
+
+  /* Logo */
+  --header-logo-height: 50px;
+  --header-logo-width: 50px;
+  --header-logo-color: #000;
+  --header-logo-background: transparent;
+  --header-logo-border-radius: 0;
+  --header-logo-margin-inline: 1rem;
+
+  /* Title */
+  --header-title-color: #000;
+  --header-title-font-size: 1.5rem;
+  --header-title-font-weight: bold;
+  --header-title-font-family: "regular", sans-serif;
+  --header-title-line-height: 1.5;
+  --header-title-letter-spacing: 0.5px;
+  --header-title-text-transform: none; /* uppercase, capitalize, lowercase */
+  --header-title-margin: 0;
+
+  /* Subtitle */
+  --header-subtitle-color: #333;
+  --header-subtitle-font-size: 1rem;
+  --header-subtitle-font-weight: normal;
+  --header-subtitle-font-family: "regular", sans-serif;
+  --header-subtitle-line-height: 1.5;
+  --header-subtitle-letter-spacing: 0;
+  --header-subtitle-margin: 0;
+
+  /* Links / Navigation */
+  --header-link-color: #000;
+  --header-link-hover-color: #555;
+  --header-link-active-color: #007bff;
+  --header-link-font-size: 1rem;
+  --header-link-font-weight: normal;
+  --header-link-spacing: 1rem;
+
+  /* Buttons inside header */
+  --header-button-background: transparent;
+  --header-button-color: #000;
+  --header-button-border: none;
+  --header-button-border-radius: 4px;
+  --header-button-padding: 0.5rem 1rem;
+  --header-button-hover-background: rgba(0,0,0,0.05);
+  --header-button-hover-color: #000;
+
+  /* Avatar / User menu */
+  --header-avatar-size: 40px;
+  --header-avatar-border-radius: 50%;
+  --header-avatar-border: 2px solid #fff;
+  --header-avatar-margin-inline: 0.5rem;
+
+  /* Search bar */
+  --header-search-width: 200px;
+  --header-search-height: 35px;
+  --header-search-border: 1px solid #ccc;
+  --header-search-border-radius: 4px;
+  --header-search-background: #fff;
+  --header-search-padding: 0.5rem 1rem;
+
+  /* Responsiveness */
+  --header-mobile-height: 60px;
+  --header-mobile-logo-size: 40px;
+  --header-mobile-title-font-size: 1.2rem;
+  --header-mobile-padding: 0.5rem;
+  //****************************************************************************************************************//
+  // ************************************************* SideMenu Variables ******************************************//
+  //****************************************************************************************************************//
+
+  //****************************************************************************************************************//
+  // ************************************************* Footer Variables ********************************************//
+  //****************************************************************************************************************//
+
+
+
+
+}

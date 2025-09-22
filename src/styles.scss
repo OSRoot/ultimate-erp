@@ -1,5 +1,46 @@
 @use '@angular/material' as mat;
 
+//****************************************************************************************************************//
+//************************************************** Default Arabic Font *****************************************//
+//****************************************************************************************************************//
+
+@font-face {
+  font-family: "regular-arabic";
+  src: url("/assets/fonts/noto/ar/NotoKufiArabic-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "medium-arabic";
+  src: url("/assets/fonts/noto/ar/NotoKufiArabic-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "bold-arabic";
+  src: url("/assets/fonts/noto/ar/NotoKufiArabic-Bold.ttf") format("truetype");
+}
+
+
+//****************************************************************************************************************//
+//************************************************** Default Latin Font ******************************************//
+//****************************************************************************************************************//
+
+@font-face {
+  font-family: "regular-latin";
+  src: url("/assets/fonts/noto/en/NotoSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "medium-latin";
+  src: url("/assets/fonts/noto/en/NotoSans-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "bold-latin";
+  src: url("/assets/fonts/noto/en/NotoSans-Bold.ttf") format("truetype");
+}
+
+
+
 html {
   @include mat.theme((
     color: (
@@ -31,3 +72,4 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

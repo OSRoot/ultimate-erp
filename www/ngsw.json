@@ -1,0 +1,97 @@
+{
+  "configVersion": 1,
+  "timestamp": 1758557260520,
+  "index": "/index.csr.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/favicon.ico",
+        "/index.csr.html",
+        "/index.html",
+        "/main-4DYGDPW3.js",
+        "/manifest.webmanifest",
+        "/styles-DOA4ECQS.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/fonts/fira-code/FiraCode-Bold.ttf",
+        "/assets/fonts/fira-code/FiraCode-Medium.ttf",
+        "/assets/fonts/fira-code/FiraCode-Regular.ttf",
+        "/assets/fonts/noto/ar/NotoKufiArabic-Bold.ttf",
+        "/assets/fonts/noto/ar/NotoKufiArabic-Medium.ttf",
+        "/assets/fonts/noto/ar/NotoKufiArabic-Regular.ttf",
+        "/assets/fonts/noto/en/NotoSans-Bold.ttf",
+        "/assets/fonts/noto/en/NotoSans-Medium.ttf",
+        "/assets/fonts/noto/en/NotoSans-Regular.ttf",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/fonts/fira-code/FiraCode-Bold.ttf": "c69ffea0fc3ef8cba6c72e31ff9db8a36dc9c857",
+    "/assets/fonts/fira-code/FiraCode-Medium.ttf": "0550c09902c501ff13cce519af884ee557b094e7",
+    "/assets/fonts/fira-code/FiraCode-Regular.ttf": "80abed4c40b3a19ba2def87e7fd66fba9bb40c2f",
+    "/assets/fonts/noto/ar/NotoKufiArabic-Bold.ttf": "2dd921a5b12832753f3b64a6021300c660fae8d5",
+    "/assets/fonts/noto/ar/NotoKufiArabic-Medium.ttf": "3bf806027ecd21a7df4dc0dac4f4d8e34f7a064f",
+    "/assets/fonts/noto/ar/NotoKufiArabic-Regular.ttf": "de4708233177537c0dd8d6963860134159cd5ccc",
+    "/assets/fonts/noto/en/NotoSans-Bold.ttf": "bc7f5e39185c4912c013624fcf123fe213b14890",
+    "/assets/fonts/noto/en/NotoSans-Medium.ttf": "3d178662eb4bd87b4ad7bcea41e19771bc1685d7",
+    "/assets/fonts/noto/en/NotoSans-Regular.ttf": "f04a504e2078d6c01b3bf453c0d18c4f77c2133b",
+    "/assets/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "/assets/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "/assets/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "/assets/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/assets/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "/assets/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/assets/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "/assets/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/index.csr.html": "b7dcf45eec2d4b6baa711b9d95a28bcc0230e649",
+    "/index.html": "3784678dcfe2d3c8a0f58d34ab44b4f99368d751",
+    "/main-4DYGDPW3.js": "1a728b8f9c79e244d98823050c429107a5de765f",
+    "/manifest.webmanifest": "10c467620033096f391c3915f1e4b2fd5099be10",
+    "/styles-DOA4ECQS.css": "b0b1dd7e01a797a91c639d041a6bf10583d987d9"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
