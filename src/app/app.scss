@@ -1,13 +1,26 @@
+.main-app-window {
+  position: relative;
+  height: 100%;
+  /* no padding-top — content stays fixed */
+}
+
+/* Titlebar overlays content */
 .titlebar {
-  -webkit-app-region: drag;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 
   height: 36px;
   padding: 4px 12px;
 
-  background: rgba(10, 25, 35, 0.55);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  -webkit-app-region: drag !important;
+
+  background: radial-gradient(circle at center, #001020, #000);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
@@ -16,10 +29,19 @@
   color: #e0ffff;
   letter-spacing: 1px;
 
-  animation: fadeInDown 0.3s ease-in-out;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
 }
 
+.titlebar.hide {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* --- Window controls --- */
 .window-controls button {
+  -webkit-app-region: no-drag !important;
   background: transparent;
   border: none;
   color: #e0ffff;
@@ -31,11 +53,17 @@
 
 .window-controls button:hover {
   color: cyan;
-  text-shadow: 0 0 2px rgba(0, 255, 255, 0.286), 0 0 4px rgba(0,255,255,0.2);
+  text-shadow: 0 0 2px rgba(0, 255, 255, 0.286),
+               0 0 4px rgba(0,255,255,0.2);
 }
+.main-app-window.has-header router-outlet + * {
+  margin-top: 36px;
+}
+/* --- App title glow --- */
 .app-title {
   font-weight: 600;
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.435), 0 0 2px rgba(0,255,255,0.2);
+  text-shadow: 0 0 4px rgba(0, 255, 255, 0.435),
+               0 0 2px rgba(0,255,255,0.2);
   animation: titlePulse 3s infinite alternate;
 }
 
@@ -43,6 +71,8 @@
   from { text-shadow: 0 0 4px cyan, 0 0 8px rgba(0,255,255,0.6); }
   to   { text-shadow: 0 0 8px cyan, 0 0 16px rgba(0,255,255,1); }
 }
+
+/* --- Cyan line at bottom --- */
 .titlebar::after {
   content: '';
   position: absolute;

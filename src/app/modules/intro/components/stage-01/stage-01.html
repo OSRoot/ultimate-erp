@@ -1,7 +1,7 @@
-<div class="stage-01-wrapper" [class.enter-active]="isVisible()">
+<div class="stage-01-wrapper" [class.enter-active]="isVisible()" [class.closing]="closing()">
 
   <div class="stage-01-titlebar">
-    <div class="title">STAGE</div>
+    <div class="title">{{'system.modules.intro.stage-01.title' | translate}}</div>
     <div class="window-controls">
       <button (mouseenter)="playHoverSound()">–</button>
       <button (mouseenter)="playHoverSound()">▢</button>
@@ -11,17 +11,17 @@
 
   <div class="stage-01-header">
     <div class="head"></div>
-    <h1>Welcome to Stage 01</h1>
+    <h1>{{'system.modules.intro.stage-01.header' | translate}}</h1>
     <div class="tail"></div>
   </div>
 
   <div class="stage-01-container">
-    <p>You have the chance to be a Player.</p>
-    <p>Do you accept?</p>
+    <p>{{'system.modules.intro.stage-01.firstHint' | translate}}</p>
+    <p>{{'system.modules.intro.stage-01.firstChanceQuestion' | translate}}</p>
 
     <div class="stage-01-buttons">
-      <button mat-flat-button color="primary" (mouseleave)="playLeaveClickSound()"  (mouseenter)="playHoverSound()">Accept</button>
-      <button mat-flat-button color="warn" (mouseleave)="playLeaveClickSound()" (mouseenter)="playHoverSound()">Decline</button>
+      <button mat-flat-button color="primary" (mouseleave)="playLeaveClickSound()"  (mouseenter)="playHoverSound()" (click)="onAccept()">{{'system.modules.intro.stage-01.accept' | translate}}</button>
+      <button mat-flat-button color="warn" (mouseleave)="playLeaveClickSound()" (mouseenter)="playHoverSound()">{{'system.modules.intro.stage-01.decline' | translate}}</button>
     </div>
   </div>
 

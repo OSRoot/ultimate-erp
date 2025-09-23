@@ -1,17 +1,13 @@
-<div class="main-app-window">
+<div class="main-app-window" >
+<header class="titlebar" [ngClass]="{ hide: !showHeader() }">
+  <div class="app-title">{{ 'system.TITLE' | translate }}</div>
 
-  @if (showHeader()){
-    <header class="titlebar">
-      <div class="app-title">SYSTEM</div>
-
-      <div class="window-controls">
-        <button id="min-btn" (click)="clickTest()">–</button>
-        <button id="max-btn" (click)="electronService.toggleMaximize()">🔳</button>
-        <button id="close-btn" (click)="electronService.close()">✕</button>
-      </div>
-    </header>
-  }
-
+  <div class="window-controls">
+    <button id="min-btn" (click)="clickTest()">–</button>
+    <button id="max-btn" (click)="electronService.toggleMaximize()">🔳</button>
+    <button id="close-btn" (click)="electronService.close()">✕</button>
+  </div>
+</header>
   <router-outlet></router-outlet>
 
 </div>

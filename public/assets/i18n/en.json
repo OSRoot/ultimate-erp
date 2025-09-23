@@ -1,0 +1,28 @@
+{
+  "system":{
+    "core":{},
+    "modules":{
+      "intro":{
+        "stage-01":{
+          "title":"OSROOT - STAGE 01",
+          "header":"Welcome to Stage 01",
+          "firstHint":"You have the chance to be a Player",
+          "firstChanceQuestion":"Do you accept?",
+          "accept":"Accept",
+          "decline":"Decline"
+        },
+        "splash": {
+          "loading": "Loading",
+          "starting": "System is starting",
+          "shadows": "Shadows arising"
+        }
+      },
+      "auth":{},
+      "security":{},
+      "business":{},
+      "customization":{},
+      "integrations":{},
+      "reports":{}
+    }
+  }
+}

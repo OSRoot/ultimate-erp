@@ -1,0 +1,54 @@
+.splash-wrapper {
+  height: calc(100vh) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #001020, #000);
+  color: cyan;
+  font-family: "bold-latin";
+  text-shadow: 0 0 12px cyan;
+  animation: fadeIn 2s ease forwards;
+  transition: all 0.3s ease;
+}
+.cursor {
+  display: inline-block;
+  margin-left: 4px;
+  color: cyan;
+  font-weight: bold;
+  text-shadow: 0 0 8px cyan, 0 0 16px cyan;
+  animation: blink 0.5s step-end infinite;
+}
+
+
+.logo {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.loading {
+  font-size: 1.2rem;
+  animation: smoothPulse 2s ease-in-out infinite;
+}
+
+/* Smooth glowing pulse */
+@keyframes smoothPulse {
+  0% {
+    opacity: 0.6;
+    text-shadow: 0 0 6px cyan, 0 0 12px rgba(0,255,255,0.4);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 12px cyan, 0 0 24px rgba(0,255,255,0.8);
+  }
+  100% {
+    opacity: 0.6;
+    text-shadow: 0 0 6px cyan, 0 0 12px rgba(0,255,255,0.4);
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+    text-shadow: none;
+  }
+}

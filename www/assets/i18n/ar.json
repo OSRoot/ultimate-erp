@@ -1,0 +1,30 @@
+{
+  "system":{
+    "core":{},
+
+
+    "modules":{
+      "intro":{
+        "stage-01":{
+          "title":"OSROOT - STAGE 01",
+          "header":"مرحبا بك في المرحلة 01",
+          "firstHint":"لديك فرصة لتصبح لاعب!",
+          "firstChanceQuestion":"هل تقبل؟",
+          "accept":"قبول",
+          "decline":"رفض"
+        },
+        "splash": {
+          "loading": "جاري التحميل",
+          "starting": "النظام قيد التشغيل",
+          "shadows": "الظلال تنهض"
+        }
+      },
+      "auth":{},
+      "security":{},
+      "business":{},
+      "customization":{},
+      "integrations":{},
+      "reports":{}
+    }
+  }
+}

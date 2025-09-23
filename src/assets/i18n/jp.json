@@ -1,0 +1,22 @@
+{
+  "system":{
+    "core":{},
+    "modules":{
+      "intro":{
+        "stage-01":{
+          "header":"ステージ０１へようこそ",
+          "firstHint":"プレイヤーになるチャンスがあります",
+          "firstChanceQuestion":"うけいれますか？",
+          "accept":"アクセプト",
+          "decline":"ディクライン"
+        }
+      },
+      "auth":{},
+      "security":{},
+      "business":{},
+      "customization":{},
+      "integrations":{},
+      "reports":{}
+    }
+  }
+}

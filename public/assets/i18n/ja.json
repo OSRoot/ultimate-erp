@@ -1,0 +1,29 @@
+{
+  "system":{
+    "TITLE":"システム",
+    "core":{},
+    "modules":{
+      "intro":{
+        "stage-01":{
+          "title":"OSROOT - ステージ０１",
+          "header":"ステージ０１へようこそ",
+          "firstHint":"プレイヤーになるチャンスがあります",
+          "firstChanceQuestion":"うけいれますか？",
+          "accept":"アクセプト",
+          "decline":"ディクライン"
+        },
+        "splash":{
+          "loading":"ローディング",
+          "starting": "しすてむすたーとちゅう",
+          "shadows": "かげがめざめる"
+        }
+      },
+      "auth":{},
+      "security":{},
+      "business":{},
+      "customization":{},
+      "integrations":{},
+      "reports":{}
+    }
+  }
+}
