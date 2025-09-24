@@ -72,6 +72,7 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "@types/three": "^0.180.0",
     "concurrently": "^9.2.1",
     "electron": "^38.1.0",
     "jasmine-core": "~5.9.0",

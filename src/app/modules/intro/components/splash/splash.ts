@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -25,9 +26,12 @@ export class Splash implements OnInit, OnDestroy {
   ];
 
   constructor(private translate: TranslateService) {}
-
+  private router = inject(Router)
   ngOnInit(): void {
     this.startTypingLoop();
+    setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 5000);
   }
 
   ngOnDestroy(): void {

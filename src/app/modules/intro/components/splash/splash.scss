@@ -20,8 +20,8 @@
   animation: blink 0.5s step-end infinite;
 }
 
-
 .logo {
+  z-index: 1;
   font-size: 2.5rem;
   margin-bottom: 20px;
 }
@@ -30,6 +30,14 @@
   font-size: 1.2rem;
   animation: smoothPulse 2s ease-in-out infinite;
 }
+
+
+
+
+
+
+
+
 
 /* Smooth glowing pulse */
 @keyframes smoothPulse {
