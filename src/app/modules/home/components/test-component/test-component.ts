@@ -1,0 +1,11 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-test-component',
+  standalone: false,
+  templateUrl: './test-component.html',
+  styleUrl: './test-component.scss'
+})
+export class TestComponent {
+
+}

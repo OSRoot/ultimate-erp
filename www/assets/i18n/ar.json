@@ -1,7 +1,7 @@
 {
   "system":{
+    "TITLE":"النظام",
     "core":{},
-
 
     "modules":{
       "intro":{
@@ -24,7 +24,10 @@
       "business":{},
       "customization":{},
       "integrations":{},
-      "reports":{}
+      "reports":{},
+      "home":{
+        "title": "الرئيسية"
+      }
     }
   }
 }

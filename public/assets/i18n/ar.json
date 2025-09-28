@@ -24,7 +24,10 @@
       "business":{},
       "customization":{},
       "integrations":{},
-      "reports":{}
+      "reports":{},
+      "home":{
+        "title": "الرئيسية"
+      }
     }
   }
 }

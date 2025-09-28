@@ -1,6 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { UiStateService } from '../../../../core/services/ui/state.service';
 
 @Component({
   selector: 'app-splash',
@@ -25,12 +26,13 @@ export class Splash implements OnInit, OnDestroy {
     'system.modules.intro.splash.shadows'
   ];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService, private showHeader: UiStateService) {}
   private router = inject(Router)
   ngOnInit(): void {
     this.startTypingLoop();
     setTimeout(() => {
       this.router.navigate(['/home']);
+        this.showHeader.setHeader(true);
     }, 5000);
   }
 

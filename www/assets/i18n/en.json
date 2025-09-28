@@ -1,5 +1,6 @@
 {
   "system":{
+    "TITLE":"System",
     "core":{},
     "modules":{
       "intro":{
@@ -22,7 +23,10 @@
       "business":{},
       "customization":{},
       "integrations":{},
-      "reports":{}
+      "reports":{},
+      "home":{
+        "title": "Home"
+      }
     }
   }
 }

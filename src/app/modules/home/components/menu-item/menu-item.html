@@ -1,1 +1,11 @@
-<p>menu-item works!</p>
+@for(item of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];track $index){
+  <div class="home-menu-item-card" [ngStyle]="{ 'animation-delay': $index * 0.1 + 's'}" (mouseenter)="playHoverSound()" (click)="openChild('window-' + $index, '/home/test-component')">
+    <div class="img-icon">
+      <fa-icon [icon]="faIcon()"></fa-icon>
+    </div>
+    <div class="menu-item-title">
+      <h2>{{ 'system.modules.home.title' | translate }}</h2>
+    </div>
+  </div>
+}
+

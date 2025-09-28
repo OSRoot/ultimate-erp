@@ -8,4 +8,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   minimize: () => ipcRenderer.invoke('window:minimize'),
   toggleMaximize: () => ipcRenderer.invoke('window:toggleMaximize'),
   close: () => ipcRenderer.invoke('window:close'),
+  openChildWindow: () => ipcRenderer.invoke('window:openChild', { id:'', route: '' }),
+  showNotification: () => ipcRenderer.invoke('notification:show', { title:'', body: '' }),
 });

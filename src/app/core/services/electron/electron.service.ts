@@ -33,12 +33,34 @@ export class OSELECTRON_SERVICE {
     }
   }
 
-close(): void {
+  close(): void {
+    if (this.electronAPI) {
+      console.log("Angular → close()");
+      this.electronAPI.close();
+    } else {
+      console.warn("Electron API not available. Are you running in browser?");
+    }
+  }
+
+
+  openChildWindow(id: string, route: string): void {
+    if (this.electronAPI) {
+      console.log("Angular → openChildWindow()");
+      this.electronAPI.openChildWindow(id, route);
+    } else {
+      console.warn("Electron API not available. Are you running in browser?");
+    }
+
+    this.showNotification("Child Window", "The Route is " + route);
+  }
+
+  showNotification(title: string, body: string): void {
   if (this.electronAPI) {
-    console.log("Angular → close()");
-    this.electronAPI.close();
+    console.log("Angular → showNotification()");
+    this.electronAPI.showNotification(title, body);
   } else {
-    console.warn("Electron API not available. Are you running in browser?");
+    console.warn("Electron API not available. Running in browser?");
   }
 }
+
 }

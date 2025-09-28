@@ -1,0 +1,21 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.home-container{
+  padding: 50px 16px;
+  width: 100%;
+
+
+}
+  .home-content{
+    width: 100%;
+    app-menu-item{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-gap: 16px;
+    }
+  }

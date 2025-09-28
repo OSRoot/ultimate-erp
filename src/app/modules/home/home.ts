@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './home.scss'
 })
 export class Home {
+  faHome = faHome
 
 }
