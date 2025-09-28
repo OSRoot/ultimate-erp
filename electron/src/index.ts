@@ -4,109 +4,92 @@ import type { MenuItemConstructorOptions } from 'electron';
 import { app, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
-import { ipcMain, Notification } from 'electron';
-// import { autoUpdater } from 'electron-updater';
-import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from './setup';
-import { windowsManager } from './classes/windows.class';
+import { autoUpdater } from 'electron-updater';
 
-// Graceful handling of unhandled errors.
+import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from './setup';
+import { IPCMainHandler } from './classes/ipc.class';
+import { WindowsManager } from './classes/windows.class';
+
+// ─────────────────────────────────────────────
+// 1. Handle uncaught/unhandled errors globally
+// ─────────────────────────────────────────────
 unhandled();
 
-// Define our menu templates (these are optional)
-const trayMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [new MenuItem({ label: 'Quit App', role: 'quit' })];
+// ─────────────────────────────────────────────
+// 2. Define Menu Templates (optional, customizable)
+// ─────────────────────────────────────────────
+const trayMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [
+  new MenuItem({ label: 'Quit App', role: 'quit' }),
+];
 const appMenuBarMenuTemplate: (MenuItemConstructorOptions | MenuItem)[] = [
   { role: process.platform === 'darwin' ? 'appMenu' : 'fileMenu' },
   { role: 'viewMenu' },
 ];
 
-// Get Config options from capacitor.config
+// ─────────────────────────────────────────────
+// 3. Load Capacitor Config
+// ─────────────────────────────────────────────
 const capacitorFileConfig: CapacitorElectronConfig = getCapacitorElectronConfig();
 
-// Initialize our app. You can pass menu templates into the app here.
-// const myCapacitorApp = new ElectronCapacitorApp(capacitorFileConfig);
-const myCapacitorApp = new ElectronCapacitorApp(capacitorFileConfig, trayMenuTemplate, appMenuBarMenuTemplate);
-const windowManager = new windowsManager(myCapacitorApp.getCustomURLScheme());
+// ─────────────────────────────────────────────
+// 4. Initialize Core Application Classes
+// ─────────────────────────────────────────────
+const myCapacitorApp = new ElectronCapacitorApp(
+  capacitorFileConfig,
+  trayMenuTemplate,
+  appMenuBarMenuTemplate
+);
+const windowManager = new WindowsManager(myCapacitorApp.getCustomURLScheme());
+const ipcHandler = new IPCMainHandler(myCapacitorApp, windowManager);
 
-// If deeplinking is enabled then we will set it up here.
+// ─────────────────────────────────────────────
+// 5. Setup Deep Linking (optional)
+// ─────────────────────────────────────────────
 if (capacitorFileConfig.electron?.deepLinkingEnabled) {
   setupElectronDeepLinking(myCapacitorApp, {
     customProtocol: capacitorFileConfig.electron.deepLinkingCustomProtocol ?? 'mycapacitorapp',
   });
 }
 
-// If we are in Dev mode, use the file watcher components.
+// ─────────────────────────────────────────────
+// 6. Setup Hot Reloading for Dev Mode
+// ─────────────────────────────────────────────
 if (electronIsDev) {
   setupReloadWatcher(myCapacitorApp);
 }
 
-// Run Application
+// ─────────────────────────────────────────────
+// 7. Run Application
+// ─────────────────────────────────────────────
 (async () => {
-  // Wait for electron app to be ready.
   await app.whenReady();
-  // Security - Set Content-Security-Policy based on whether or not we are in dev mode.
+
+  // Security policy based on environment
   setupContentSecurityPolicy(myCapacitorApp.getCustomURLScheme());
-  // Initialize our app, build windows, and load content.
+
+  // Init main window
   await myCapacitorApp.init();
-  // Check for updates if we are in a packaged app.
-  // autoUpdater.checkForUpdatesAndNotify();
+
+  // Init IPC bindings
+  ipcHandler.init();
+
+  // Auto-update when packaged
+  if (!electronIsDev) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
 })();
 
-// Handle when all of our windows are close (platforms have their own expectations).
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
+// ─────────────────────────────────────────────
+// 8. Handle Window Lifecycle
+// ─────────────────────────────────────────────
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-// When the dock icon is clicked.
-app.on('activate', async function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+app.on('activate', async () => {
   if (myCapacitorApp.getMainWindow().isDestroyed()) {
     await myCapacitorApp.init();
   }
 });
-
-// Place all ipc or other electron api calls and custom functionality under this line
-ipcMain.handle('window:minimize', () => {
-  const win = myCapacitorApp.getMainWindow();
-  if (win) win.minimize();
-});
-
-ipcMain.handle('window:toggleMaximize', () => {
-  const win = myCapacitorApp.getMainWindow();
-  if (win) {
-    if (win.isMaximized()) {
-      win.unmaximize();
-    } else {
-      win.maximize();
-    }
-  }
-});
-
-ipcMain.handle('window:close', () => {
-  const win = myCapacitorApp.getMainWindow();
-  if (win) win.close();
-});
-
-ipcMain.handle('window:openChild', (_event, args)=>{
-  console.log(args);
-  const {id , route} = args;
-
-  windowManager.createWindow(id, {route, parent: myCapacitorApp.getMainWindow(), modal:false});
-})
-
-ipcMain.handle('notification:show', (_event, args)=>{
-  const notification = new Notification({
-    title: args.title ?? 'OS-SYS',
-    body: args.body ?? 'Hello From OS-SYS Electron',
-  })
-
-  notification.show();
-  notification.on('click', () => {
-    const win = myCapacitorApp.getMainWindow();
-    if (win) win.focus();
-  });
-})

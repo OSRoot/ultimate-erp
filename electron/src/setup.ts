@@ -114,8 +114,7 @@ export class ElectronCapacitorApp {
       y: this.mainWindowState.y,
       width: this.mainWindowState.width,
       height: this.mainWindowState.height,
-      frame:false, // remove the title bar
-      titleBarStyle: 'hiddenInset', // tweak for macOS
+      frame: false,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,

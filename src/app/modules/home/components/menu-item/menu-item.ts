@@ -1,4 +1,5 @@
-import { Component, inject, model, OnInit } from '@angular/core';
+import { WindowActionPayload, WindowOpenPayload } from './../../../../../../electron/src/types/ipc-payloads';
+import { Component, model, OnInit } from '@angular/core';
 import { OSELECTRON_SERVICE } from '../../../../core/services/electron/electron.service';
 @Component({
   selector: 'app-menu-item',
@@ -10,7 +11,7 @@ export class MenuItem implements OnInit {
   faIcon = model<any>('')
   private soundsReady = false;
   private tapSound !:HTMLAudioElement;
-  private electron = inject(OSELECTRON_SERVICE)
+  private windowFNS = window.osystemapi;
   ngOnInit(): void {
     void document.body.offsetHeight; // force reflow
     this.tapSound = new Audio('/assets/sounds/tap-tone.wav');
@@ -36,6 +37,7 @@ export class MenuItem implements OnInit {
   }
 
   openChild(id:string, route:string) {
-    this.electron.openChildWindow(id, route);
+    const payload:WindowOpenPayload = {id, route};
+    this.windowFNS.openChildWindow(payload);
   }
 }

@@ -1,0 +1,1 @@
+import{C as t,r as a}from"./chunk-ZHESTMHB.js";var r=class e{_showHeader=t(!0);showHeader=this._showHeader.asReadonly();setHeader(o){this._showHeader.set(o)}static \u0275fac=function(s){return new(s||e)};static \u0275prov=a({token:e,factory:e.\u0275fac,providedIn:"root"})};export{r as a};

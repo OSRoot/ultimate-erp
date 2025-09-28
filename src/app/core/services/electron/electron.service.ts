@@ -5,38 +5,38 @@ import { isPlatformBrowser } from "@angular/common";
   providedIn: 'root'
 })
 export class OSELECTRON_SERVICE {
-  private electronAPI: any;
   private isBrowser = false;
+  private windowFNS = window.osystemapi;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    if (this.isBrowser && (window as any).electronAPI) {
-      this.electronAPI = (window as any).electronAPI;
+    if (this.isBrowser && (window as any).osystemapi) {
+      this.windowFNS = window.osystemapi;
     }
   }
 
   // minimize window
   minimize(): Promise<void> | void {
     console.log("Service: minimize()");
-    if (this.electronAPI) {
+    if (this.windowFNS) {
       console.log("Service: found electronAPI");
-      return this.electronAPI.minimize();
+      return this.windowFNS.windowAction({ action: "minimize" });
     } else {
       console.warn("Service: electronAPI missing");
     }
   }
   // toggle maximize
   toggleMaximize(): Promise<void> | void {
-    if (this.electronAPI) {
+    if (this.windowFNS) {
       console.log("Angular → toggleMaximize()");
-      return this.electronAPI.toggleMaximize();
+      return this.windowFNS.windowAction({action:'maximize'});
     }
   }
 
   close(): void {
-    if (this.electronAPI) {
+    if (this.windowFNS) {
       console.log("Angular → close()");
-      this.electronAPI.close();
+      this.windowFNS.windowAction({action:'close'});
     } else {
       console.warn("Electron API not available. Are you running in browser?");
     }
@@ -44,9 +44,9 @@ export class OSELECTRON_SERVICE {
 
 
   openChildWindow(id: string, route: string): void {
-    if (this.electronAPI) {
+    if (this.windowFNS) {
       console.log("Angular → openChildWindow()");
-      this.electronAPI.openChildWindow(id, route);
+      this.windowFNS.openChildWindow({id, route});
     } else {
       console.warn("Electron API not available. Are you running in browser?");
     }
@@ -55,9 +55,9 @@ export class OSELECTRON_SERVICE {
   }
 
   showNotification(title: string, body: string): void {
-  if (this.electronAPI) {
+  if (this.windowFNS) {
     console.log("Angular → showNotification()");
-    this.electronAPI.showNotification(title, body);
+    this.windowFNS.showNotification({title, body});
   } else {
     console.warn("Electron API not available. Running in browser?");
   }

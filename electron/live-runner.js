@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { spawn } = require('child_process');
 const cp = require('child_process');
 const chokidar = require('chokidar');
 const electron = require('electron');
 
 let child = null;
-const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const reloadWatcher = {
   debouncer: null,
   ready: false,
@@ -13,17 +13,18 @@ const reloadWatcher = {
   restarting: false,
 };
 
-///*
 function runBuild() {
-  return new Promise((resolve, _reject) => {
-    let tempChild = cp.spawn(npmCmd, ['run', 'build']);
-    tempChild.once('exit', () => {
-      resolve();
+  return new Promise((resolve, reject) => {
+    const ngProcess = spawn('ng', ['build'], { shell: true, stdio: 'inherit' });
+    ngProcess.on('close', code => {
+      if (code !== 0) {
+        reject(new Error(`ng build failed with code ${code}`));
+      } else {
+        resolve();
+      }
     });
-    tempChild.stdout.pipe(process.stdout);
   });
 }
-//*/
 
 async function spawnElectron() {
   if (child !== null) {

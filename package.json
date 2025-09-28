@@ -12,7 +12,9 @@
     "electron:build": "tsc -p electron/tsconfig.json",
     "electron:start": "npm run build && npm run electron:build && electron ./dist/electron/main.js",
     "electron:dev": "concurrently \"ng serve\" \"tsc -w -p electron/tsconfig.json\" \"wait-on http://localhost:4200 && electron ./dist/electron/main.js\"",
-    "electron:package": "npm run build && npm run electron:build && electron-builder"
+    "electron:package": "npm run build && npm run electron:build && electron-builder",
+    "electron:start-live":"npx cap copy @capacitor-community/electron && npx cap copy @capacitor-community/electron && cd electron && npm run electron:start-live",
+    "electron:add":"npx cap add @capacitor-community/electron"
   },
   "build": {
     "appId": "osroot.erp",
