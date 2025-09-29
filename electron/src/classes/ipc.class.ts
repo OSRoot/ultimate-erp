@@ -2,7 +2,7 @@
 import { ipcMain, Notification, BrowserWindow } from 'electron';
 import { WindowsManager } from './windows.class';
 import { ElectronCapacitorApp } from '../setup';
-import type { WindowOpenPayload, NotificationPayload, WindowActionPayload } from '../types/ipc-payloads';
+import type { WindowOpenPayload, NotificationPayload,  } from '../types/ipc-payloads';
 
 export class IPCMainHandler {
   constructor(
@@ -14,6 +14,10 @@ export class IPCMainHandler {
    * Initialize all IPC handlers
    */
   init(): void {
+    ipcMain.on('get:winId', (event) => {
+      const bw = BrowserWindow.fromWebContents(event.sender);
+      event.returnValue = (bw as any).winId ?? 'main';
+    });
     console.log('[IPCMainHandler] Initializing handlers...');
     this.registerWindowControls();
     this.registerChildWindow();

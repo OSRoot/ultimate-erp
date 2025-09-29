@@ -3,6 +3,8 @@ import { join } from 'path';
 
 export interface WindowOptions{
   route?: string;
+  query?: string;
+  hash?: string;
   width?: number;
   height?: number;
   modal?: boolean;
@@ -27,24 +29,26 @@ export class WindowsManager {
       existWindow?.focus();
       return existWindow as BrowserWindow;
     }
-    console.log(`[WindowsManager] Creating window ${id} with options ${JSON.stringify(options)}`);
 
-  const window = new BrowserWindow({
-      width: options.width ?? 800,
-      height: options.height ?? 600,
-      show: options.modal ?? false,
-      modal: options.modal ?? false,
-      parent: options.parent! ?? null,
-      frame:true,
-      webPreferences:{
-        nodeIntegration: true,
-        contextIsolation: true,
-        preload: join(app.getAppPath(), 'build', 'src', 'preload.js'),
-      }
-    })
-    const targetRoute = options.route?.replace(/^\//, '') ?? '';
-    window.loadURL(`${this.customScheme}://index.html#${targetRoute}`);
-    window.once('ready-to-show', () => {
+    const window = new BrowserWindow({
+        width: options.width ?? 800,
+        height: options.height ?? 600,
+        show: options.modal ?? false,
+        modal: options.modal ?? false,
+        parent: options.parent! ?? null,
+        frame:false,
+        webPreferences:{
+          nodeIntegration: true,
+          contextIsolation: true,
+          preload: join(app.getAppPath(), 'build', 'src', 'preload.js'),
+          additionalArguments: [`--winId=${id}`]
+        }
+      }) as BrowserWindow & { winId?: string };
+      this.windows.set(id, window);
+
+      const fullUrl = `${this.customScheme}://index.html/${options.route ?? ''}`;
+      window.loadURL(fullUrl);
+      window.once('ready-to-show', () => {
       window.show();
     })
 

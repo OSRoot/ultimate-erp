@@ -10,23 +10,17 @@ import type {
 require('./rt/electron-rt');
 
 console.log('[Preload] Loaded and exposing osystemapi');
+const winId: string = ipcRenderer.sendSync('get:winId');
 
 contextBridge.exposeInMainWorld('osystemapi', {
-  /**
-   * Perform a window action (minimize, maximize, close)
-   */
+  getWinId: () => winId,
+
   windowAction: (payload: WindowActionPayload) =>
-    ipcRenderer.invoke(`window:${payload.action}`),
+    ipcRenderer.invoke(`window:${payload.action}`, { ...payload, winId }),
 
-  /**
-   * Open a child window
-   */
   openChildWindow: (payload: WindowOpenPayload) =>
-    ipcRenderer.invoke('window:openChild', payload),
+    ipcRenderer.invoke('window:openChild', { ...payload, parentId: winId }),
 
-  /**
-   * Show a system notification
-   */
   showNotification: (payload: NotificationPayload) =>
-    ipcRenderer.invoke('notification:show', payload),
+    ipcRenderer.invoke('notification:show', { ...payload, winId }),
 });
