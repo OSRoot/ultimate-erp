@@ -1,0 +1,15 @@
+export { OSsys as OSSysDevice } from './ossys/device.contracts';
+export { OSsys as OSSysError } from './ossys/error.contracts';
+export { OSsys as OSSysInfo } from './ossys/systeminfo.contracts';
+export { OSsys as OSSysLog } from './ossys/logs.contracts';
+export { OSsys as OSSysNotification } from './ossys/notifications.contracts';
+export { OSsys as OSSysPermissions } from './ossys/permissions.contracts';
+export { OSsys as OSSysProcess } from './ossys/process.contracts';
+export { OSsys as OSSysSession } from './ossys/session.contracts';
+export { OSsys as OSSysTheme } from './ossys/theme.contracts';
+export { OSsys as OSSysUpdate } from './ossys/update.contracts';
+export { OSsys as OSSysWindow } from './ossys/windows.contracts';
+export { OSsys as OSSysWorkspace } from './ossys/workspace.contracts';
+export { OSsys as OSSysNetwork } from './ossys/network.contracts';
+export { OSsys as OSSysPower } from './ossys/power.contracts';
+export { OSsys as OSSysCore } from './ossys/ossys.contracts';

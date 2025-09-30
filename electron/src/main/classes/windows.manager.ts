@@ -1,30 +1,35 @@
 import { BrowserWindow } from "electron";
 import { join } from "path";
 import { WindowOptions } from "../types/window-options";
+import { WindowMetadataProps, WindowMetaData } from "./windows.metadata";
+import { WindowsPersistence } from "./windows.persistence";
+
 
 /*******************************************************************************************************/
-export interface WindowMetadata {
-  customId?: string; // app-specific id
-  workspaceId?: string;
-  route?: string;
-  type?: 'main' | 'child' | 'popup' | 'modal';
-  createdAt?: number;
-  state?: 'active' | 'hidden' | 'closed';
-  lastFocus?: number;
-  bounds?: Electron.Rectangle; //presisted size/position
-  maximized?: boolean;
-  fullscreen?: boolean;
-}
-/*******************************************************************************************************/
 export class WindowManager {
+  private persistence : WindowsPersistence = new WindowsPersistence();
   private windows     : Map<string, BrowserWindow> = new Map();  // key : win.id
-  private metadata    : Map<string, WindowMetadata> = new Map();  // key : win.id
+  private metadata    : Map<string, WindowMetadataProps> = new Map();  // key : win.id
   private customeScheme : string = 'capacitor-electron';
 /*******************************************************************************************************/
   constructor (customScheme?:string){
     if (customScheme)  this.customeScheme = customScheme;
   }
-
+/******************************************************************************************************
+ * @description Restore Previous Session
+*/
+  public async restorePreviousSession():Promise<void> {
+    await this.persistence.load();
+    for (const meta of this.persistence.getAll()){
+      if (meta.data.state !== 'closed') {
+        this.createWindow(meta.id, {
+          route:meta.route,
+          bounds: meta.data.bounds,
+          type: meta.data.type
+        })
+      }
+    }
+  }
 
 /******************************************************************************************************
  * Create a new window
@@ -49,14 +54,18 @@ export class WindowManager {
       }
     });
 
-    const meta:WindowMetadata = {
+    const meta:WindowMetaData = new WindowMetaData({
       customId,
       route: options.route,
-      type: options.type?? 'child',
+      bounds: win.getBounds(),
+      state: 'active',
+      type: options.type,
       createdAt: Date.now(),
-      state:'active',
       lastFocus: Date.now(),
-    }
+    })
+
+    // add to persistence
+    this.persistence.add(meta);
 
     // Register in both registries
     this.windows.set(customId, win);
@@ -74,6 +83,14 @@ export class WindowManager {
     win.loadURL(fullUrl);
     // Lifecycle events
     win.once('ready-to-show', ()=> win.show());
+    win.on('close', ()=> {
+      meta.setState('closed');
+      this.persistence.save();
+    });
+    win.on('resize', ()=> {
+      meta.updateBounds(win.getBounds());
+      this.persistence.save();
+    });
     win.on('focus', ()=> this.updateFocus(win.id));
     win.on('hide', ()=> this.updateState(win.id, 'hidden'));
     win.on('show', ()=> this.updateState(win.id, 'active'));
@@ -86,7 +103,7 @@ export class WindowManager {
     if (meta) { meta.lastFocus = Date.now(); meta.state = 'active'; }
   }
 /******************************************************************************************************/
-  private updateState(id:number, state:WindowMetadata['state']){
+  private updateState(id:number, state:WindowMetadataProps['state']){
     const meta = this.metadata.get(`${id}`);
     if (meta) meta.state = state;
   }
@@ -165,9 +182,9 @@ export class WindowManager {
 
 /******************************************************************************************************
  * Utility : Get window Metadata
- * @returns WindowMetadata | undefined
+ * @returns WindowMetadataProps | undefined
  */
-  public getMetadata(id:number):WindowMetadata | undefined { return this.metadata.get(`${id}`); };
+  public getMetadata(id:number):WindowMetadataProps | undefined { return this.metadata.get(`${id}`); };
 
 /******************************************************************************************************
  * Find a window by customId
