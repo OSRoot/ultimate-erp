@@ -1,13 +1,13 @@
 // electron/src/classes/ipc.class.ts
 import { ipcMain, Notification, BrowserWindow } from 'electron';
-import { WindowsManager } from './windows.class';
 import { ElectronCapacitorApp } from '../setup';
-import type { WindowOpenPayload, NotificationPayload,  } from '../types/ipc-payloads';
+import { WindowManager } from './windows.manager';
+import { NotificationPayload, WindowOpenPayload } from '../types/ipc-payloads';
 
 export class IPCMainHandler {
   constructor(
     private app: ElectronCapacitorApp,
-    private windowManager: WindowsManager
+    private windowManager: WindowManager
   ) {}
 
   /**

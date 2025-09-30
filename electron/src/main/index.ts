@@ -6,9 +6,9 @@ import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
 
-import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from './setup';
-import { IPCMainHandler } from './classes/ipc.class';
-import { WindowsManager } from './classes/windows.class';
+import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from '../main/setup';
+import { WindowManager } from './classes/windows.manager';
+import { IPCMainHandler } from './classes/ipc.window.service';
 
 // ─────────────────────────────────────────────
 // 1. Handle uncaught/unhandled errors globally
@@ -39,7 +39,7 @@ const myCapacitorApp = new ElectronCapacitorApp(
   trayMenuTemplate,
   appMenuBarMenuTemplate
 );
-const windowManager = new WindowsManager(myCapacitorApp.getCustomURLScheme());
+const windowManager = new WindowManager(myCapacitorApp.getCustomURLScheme());
 const ipcHandler = new IPCMainHandler(myCapacitorApp, windowManager);
 
 // ─────────────────────────────────────────────
