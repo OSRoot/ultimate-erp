@@ -1,4 +1,3 @@
-export { OSsys as OSSysDevice } from './ossys/device.contracts';
 export { OSsys as OSSysError } from './ossys/error.contracts';
 export { OSsys as OSSysInfo } from './ossys/systeminfo.contracts';
 export { OSsys as OSSysLog } from './ossys/logs.contracts';
@@ -13,3 +12,8 @@ export { OSsys as OSSysWorkspace } from './ossys/workspace.contracts';
 export { OSsys as OSSysNetwork } from './ossys/network.contracts';
 export { OSsys as OSSysPower } from './ossys/power.contracts';
 export { OSsys as OSSysCore } from './ossys/ossys.contracts';
+export { OSsys as OSSysIntegration } from './ossys/integration.contracts';
+export { OSsys as OSSysPerformance } from './ossys/performance.contract';
+export { OSsys as OSSysSecurity } from './ossys/security.contracts';
+export { OSsys as OSSysPlatform } from './ossys/platform.contracts';
+export { OSsys as OSSysFirewall } from './ossys/firewall.contracts';
