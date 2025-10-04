@@ -1,6 +1,6 @@
 import { BrowserWindow } from "electron";
 import { join } from "path";
-import { WindowOptions } from "../types/window-options";
+import { WindowOptions } from "../../types/window-options";
 import { WindowMetadataProps, WindowMetaData } from "./windows.metadata";
 import { WindowsPersistence } from "./windows.persistence";
 
