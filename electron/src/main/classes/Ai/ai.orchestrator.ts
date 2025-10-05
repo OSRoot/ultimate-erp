@@ -5,7 +5,7 @@ import { ModelManager } from "./model.manager";
 import { PolicyManager } from "./policy.manager";
 import { TrainingManager } from "./training.manager";
 
-export class AIOrchestrator {
+export class OsAIOrchestrator {
   private trainingManager = new TrainingManager();
   private modelManager    = new ModelManager();
   private inferenceEngine = new InferenceEngine();

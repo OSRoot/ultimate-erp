@@ -1,8 +1,8 @@
-import { AIOrchestrator } from "../../classes/Ai/ai.orchestrator";
+import { OsAIOrchestrator } from "../../classes/Ai/ai.orchestrator";
 
-class AIRuntime {
+class OsAIRuntime {
 
-  private orchestrator = new AIOrchestrator();
+  private orchestrator = new OsAIOrchestrator();
 
   get(){
     return this.orchestrator;
@@ -12,4 +12,4 @@ class AIRuntime {
 // expose global
 (global as any).OSsys = (global as any).OSsys || {};
 (global as any).OsAI = (global as any).OsAI || {};
-(global as any).OsAI.Runtime = new AIRuntime();
+(global as any).OsAI.Runtime = new OsAIRuntime();

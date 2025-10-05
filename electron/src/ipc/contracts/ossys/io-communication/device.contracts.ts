@@ -49,8 +49,8 @@ declare global {
         driverVersion?      : string;
         firmware?           : string;
         metadata?           : Record<string, any>;  // extensible metadata (AI or plugins)
-        aiAnnotations?      : OSsys.AI.IAnnotation[];
-        aiInsights?         : OSsys.AI.Insight[];
+        aiAnnotations?      : OsAI.IAnnotation[];
+        aiInsights?         : OsAI.Insight[];
         suggestedActions?   : OSsys.Common.SuggestedAction[];
       }
 

@@ -9,7 +9,7 @@ declare global {
    */
     export namespace OsAI {
       export type Mode = 'online' | 'offline' | 'hybrid';
-
+      export type AwarenessLevel = 'low' | 'medium' | 'high' | 'critical';
       export interface ModelPackage {
         id              : string;
         name?           : string;
@@ -64,7 +64,92 @@ declare global {
           generatedAt?      : number;
           metadata?         : Record<string, any>;
         }
+
+
       }
+
+        /**
+         * --------------------------------------------------------------------------
+         * AI Context (Runtime Awareness Layer)
+         * --------------------------------------------------------------------------
+         */
+        export interface Context {
+          sessionId           : string;                        // current AI session
+          modelId?            : string;                        // active model
+          mode                : Mode;                          // current AI mode
+          userId?             : string;                        // current user
+          workspaceId?        : string;                        // active workspace
+          awarenessLevel?     : AwarenessLevel;                 // system-level awareness
+          recentQueries?      : string[];                      // conversational / logical trace
+          memoryState?        : Record<string, any>;           // persistent memory snapshot
+          focusTargets?       : string[];                      // IDs of active system objects
+          activeProcesses?    : string[];                      // linked process IDs
+          activeWindows?      : string[];                      // UI components or windows
+          lastUpdated?        : number;
+          metadata?           : Record<string, any>;
+        }
+
+    /**
+     * --------------------------------------------------------------------------
+     * Annotations (AI-generated insights)
+     * --------------------------------------------------------------------------
+     */
+        export interface Annotation {
+          id              : string;
+          targetId        : string;
+          targetType      : string;
+          module?         : string;
+          severityScore?  : number;
+          classifications? : string[];
+          rootCause?      : string;
+          recommendations? : string[];
+          confidence?     : number;
+          relatedPatterns? : string[];
+          generatedAt?    : number;
+          generatedBy?    : string;  // model or subsystem ID
+          metadata?       : Record<string, any>;
+        }
+        /**
+       * --------------------------------------------------------------------------
+       * Insight (Aggregated AI Evaluation)
+       * --------------------------------------------------------------------------
+       */
+        export interface Insight {
+          id              : string;
+          summary         : string;
+          confidence      : number;
+          category?       : string;
+          impactLevel?    : 'low' | 'medium' | 'high' | 'critical';
+          relatedTargets? : string[];
+          recommendations?: string[];
+          generatedAt?    : number;
+          generatedBy?    : string;
+          metadata?       : Record<string, any>;
+        }
+
+        export interface SuggestedAction {
+          id         : string;
+          label      : string;
+          command    : string;
+          params?    : Record<string, any>;
+          confidence?: number;
+          autoExecutable? : boolean;
+          priority? : number;
+          createdAt  : number;
+          createdBy? : string;
+          metadata?  : Record<string, any>;
+        }
+
+        export interface Controller {
+          loadModel(modelId: string): Promise<ModelPackage>;
+          unloadModel(modelId: string): Promise<void>;
+          infer(req: Inference.Request): Promise<Inference.Response>;
+          train(job:TrainingJob): Promise<TrainingJob>;
+          getContext(): Promise<Context>;
+          updateContext(context:Partial<Context>): Promise<void>;
+          annotate(targetId:string, data: Partial<Annotation>): Promise<Annotation>;
+          summaryInsights(): Promise<Insight[]>
+        }
     }
 }
 
