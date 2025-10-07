@@ -1,178 +1,267 @@
 export {};
-/**
- * --------------------------------------------------------------------------
- * #### OSsys.Workspace Contracts (Global)
- * --------------------------------------------------------------------------
- * Represents user/system work environments — contextual, persistent,
- * and AI-aware. Handles workspace creation, switching, syncing, and lifecycle.
- * --------------------------------------------------------------------------
- */
+
 
 declare global {
-  export namespace OsWorkspace {
-    export type Type = 'personal' | 'work' | 'sandbox' | 'guest' | 'system' | 'remote';
-    export type Status = 'active' | 'idle' | 'locked' | 'suspended' | 'terminated';
+  export namespace OSsys {
 
-    export interface Info {
-      id        : string;
-      customId? : string;
-      name      : string;
-      ownerId   : string;
-      type?     : Type;
-      status?   : Status;
-      createdAt : number;
-      updatedAt : number;
-          /**
-         * Relationships & Context
-         */
-      devices   : string[];       // device IDs
-      processes : string[];       // process IDs
-      windows?  : string[];       // window IDs
-      networkSessionId? : string;  // optional network binding
-      /**
-       * Environment / Metadata
-       */
-      metadata? : Record<string, any>; // user-defined metadata
-      settings? : Record<string, any>; // user-defined settings
-      tags?     : string[];
-      colorTheme? : string;
-      environment : Record<string, any>;  // environment runtime vars
-      /**
-      * AI Awareness / Intelligence Layer
-      */
-      aiContext?        :OsAI.Context;
-      aiAnnotations?     :OsAI.Annotation[];
-      aiInsights?        :OsAI.Insight[];
-      suggestedActions?  :OsAI.SuggestedAction[];
-      aiAwarenessLevel?  :OsAI.AwarenessLevel;
-      /**
-       * Flags
-      */
-      isEphemeral? : boolean;
-      isEncrypted? : boolean;
-      autoSave?    : boolean;
-      active?      : boolean;
-    }
-
-    /**
-       * --------------------------------------------------------------------------
-       * Workspace Lifecycle Payloads
-       * --------------------------------------------------------------------------
-       */
-
-    export interface CreatePayload {
-      customId? : string;
-      name      : string;
-      ownerId   : string;
-      type?     : Type;
-      metadata? : Record<string, any>;
-      settings? : Record<string, any>;
-      isEphemeral? : boolean;
-    }
-
-    export interface SwitchPayload {
-      workspaceId : string;
-      saveCurrent?: boolean;
-    }
-
-    export interface ClosePayload {
-      workspaceId : string;
-      force?      : boolean;
-    }
-
-    export interface UpdatePayload {
-      workspaceId: string;
-      patch      : Partial<Info>;
-    }
-
-
-
-      /**
-       * --------------------------------------------------------------------------
-       * Workspace Telemetry / Analytics
-       * --------------------------------------------------------------------------
-       * Used for AI, analytics, optimization, etc.
-       */
-
-      export interface Telemetry {
-        workspaceId : string;
-        timestamp   : number;
-        cpuUsage?   : number;
-        memoryUsage? : number;
-        gpuUsage? : number;
-        openWindows? : number;
-        activeProcesses? : number;
-        userActive? : boolean;
-        aiConfidence? : number;
-        metadata? : Record<string, any>;
-      }
-
-     /**
-       * --------------------------------------------------------------------------
-       * Workspace Permissions
-       * --------------------------------------------------------------------------
-       */
-      export interface Permissions {
-        workspaceId : string;
-        allowedUsers? : string[];
-        allowedApps? : string[];
-        restricted? : boolean;
-        autoApplyAI? : boolean;
-      }
-
-      /**
-       * --------------------------------------------------------------------------
-       * Workspace Context
-       * --------------------------------------------------------------------------
-       */
-
-      export interface Context {
-        activeWorkspaceId? : string;
-        workspaces? : Record<string, Info>;
-        lastSyncd? : number;
-        aiAwarenessLevel? : OsAI.AwarenessLevel;
-      }
-
+/**
+ * #==========================================================================
+ * 🧩 OSsys.Workspace Contracts (Global)
+ * ==========================================================================
+ * Defines the structure, behavior, and orchestration of workspaces —
+ * contextual environments that group processes, windows, and runtime state.
+ * Workspaces can be user, system, or AI-managed. Each workspace maintains
+ * metadata, environment, and runtime links to its active processes, devices,
+ * and windows.
+ * ==========================================================================
+ */
+    export namespace Workspace {
        /**
-       * --------------------------------------------------------------------------
-       * Workspace Actions (runtime interface)
+       * #--------------------------------------------------------------------------
+       * ###🧱 Workspace Base Types
        * --------------------------------------------------------------------------
        */
+      export type Type =
+        | 'personal'
+        | 'work'
+        | 'sandbox'
+        | 'guest'
+        | 'system'
+        | 'remote';
+      export type Status =
+        | 'active'
+        | 'idle'
+        | 'locked'
+        | 'suspended'
+        | 'terminated'
+        | 'error'
+        | 'unknown';
 
-       export interface Actions {
-          create(payload:CreatePayload) : Promise<Info>;
-          switch(payload:SwitchPayload) : Promise<boolean>;
-          update(payload:UpdatePayload) : Promise<Info>;
-          close(payload:ClosePayload) : Promise<boolean>;
-          list () : Promise<Info[]>;
-          get(id:string) : Promise<Info | undefined>;
-       }
-
+        export type LayoutMode = 'grid' | 'tabs' | 'floating' | 'fullscreen';
 
       /**
        * --------------------------------------------------------------------------
-       * Workspace Events (hooks)
+       * 🪟 Window Binding
        * --------------------------------------------------------------------------
        */
 
-      export interface Events {
-        onCreated?: (payload:Info) => void;
-        onActivated?: (payload:Info) => void;
-        onUpdated?: (payload:Info) => void;
-        onClosed?: (workspaceId:string) => void;
+      export interface WindowBinding {
+        windowId          :string;
+        layout            :LayoutMode;
+        position?         :{x:number, y:number};
+        size?             :{width:number, height:number};
+        lastActiveAt?     :number;
+        isMain?           :boolean;
+        isParent?         :boolean;
+        isChild?          :boolean;
+        isModal?          :boolean;
+      }
+
+      // Bound Process Info
+      export interface BoundProcess {
+        pid               :number;
+        name              :string;
+        type              :OSsys.Process.Type;
+        restartPolicy?    :OSsys.Process.RestartPolicy;
+        telemtry?         :OSsys.Process.Telemetry;
+        lastUpdatedAt?    :number;
+      }
+
+      // Workspace Information
+      export interface Info {
+        id                :string;
+        customId?         :string;
+        ownerId           :string;
+        name              :string;
+        createdAt         :number;
+        updatedAt         :number;
+        type?             :Type;
+        status?           :Status;
+                // Contextual Bindings
+        devices           :string[];
+        processes?        :BoundProcess[];
+        windows?          :WindowBinding[];
+        networkSessionId? :string;
+        // Environment & Metadata
+        environment       :Record<string, any>;
+        metadata?         :Record<string, any>;
+        settings?         :Record<string, any>;
+        tags?             :string[];
+        colorTheme?       :string;
+                // AI Layer
+        aiContext?        :OsAI.Context;
+        aiAnnotations?    :OsAI.Annotation[];
+        aiInsights?       :OsAI.Insight[];
+        aiSuggestions?    :OsAI.SuggestedAction[];
+        aiAwarenessLevel? :OsAI.AwarenessLevel;
+                // Flags
+        isEphemeral?      :boolean;
+        isEncrypted?      :boolean;
+        autoSave?         :boolean;
+        active?           :boolean;
+      }
+        // #📦 Lifecycle Payloads
+        export interface CreatePayload {
+          customId?         :string;
+          name              :string;
+          type?             :Type;
+          metadata?         :Record<string, any>;
+          ownerId           :string;
+          settings?         :Record<string, any>;
+          isEphemeral?      :boolean;
+      }
+
+      export interface SwitchPayload {
+        workspaceId       :string;
+        saveCurrent?      :boolean;
+        force?            :boolean;
+      }
+
+      export interface ClosePayload {
+        workspaceId       :string;
+        force?            :boolean;
+      }
+
+      export interface UpdatePayload {
+        workspaceId       :string;
+        patch             :Partial<Info>;
+      }
+
+      // 📊 Telemetry & Analytics
+      export interface Telemetry {
+        workspaceId       :string;
+        timestamp         :number;
+        cpuUsage?         :number;
+        memoryUsage?      :number;
+        gpuUsage?         :number;
+        diskIO?           :number;
+        networkIO?        :number;
+        threadCount?      :number;
+        userActive?       :boolean;
+        aiConfidence?     :number;
+        anomalyScore?     :number;
+        metadata?         :Record<string, any>;
+        extensions?       :Record<string, any>;
+        activeProcesses?  :number;
+        openWindows?      :number;
+      }
+
+      // 🔐 Permissions & Security
+      export interface Permission {
+        workspaceId       :string;
+        allowedUsers?     :string[];
+        allowedApps?      :string[];
+        restricted?       :boolean;
+        autoApplyAI? :boolean;
+      }
+
+      //      * 🧠 Workspace Context
+      export interface Context {
+        acitveWorkspaceId?:string;
+        workspaces?       : Record<string, Info>;
+        lastSyncedAt?     :number;
+        aiAwarenessLevel? :OsAI.AwarenessLevel;
+      }
+
+      //⚙️ Workspace Actions (Runtime Interface)
+      export interface Actions {
+        create(payload: CreatePayload): Promise<Info>;
+        switch(payload: SwitchPayload): Promise<boolean>;
+        update(payload: UpdatePayload): Promise<Info>;
+        close(payload: ClosePayload)  : Promise<boolean>;
+        list(): Promise<Info[]>;
+        get(id:string)                : Promise<Info | undefined>;
       }
       /**
-     * --------------------------------------------------------------------------
-     * AI Integration Hooks (optional extension)
-     * --------------------------------------------------------------------------
-     */
-    export interface AIBridge {
-      onContextSynced? : (context:OsAI.Context) => void;
-      onAnnotation? : (annotation:OsAI.Annotation) => void;
-      onInsight? : (insight:OsAI.Insight) => void;
-      onActionSuggested? : (action:OsAI.SuggestedAction) => void;
+       * --------------------------------------------------------------------------
+       * #🎯 Workspace Event Types
+       * --------------------------------------------------------------------------
+       * #Canonical list of all workspace-level event identifiers.
+       * #Used for event buses, IPC, and telemetry systems.
+       * --------------------------------------------------------------------------
+       */
+      export type EventsType =
+      | 'created'
+      | 'activated'
+      | 'updated'
+      | 'closed'
+      | 'telemetry'
+      | 'synced'
+      | 'error'
+      | 'ai.context.synced'
+      | 'ai.insight'
+      | 'ai.action.suggested'
+      | 'process.bound'
+      | 'process.unbound'
+      | 'window.bound'
+      | 'window.unbound';
+      //🛰️ Events (Hooks)
+      export interface Events {
+          // Dynamic binding
+        on?<T extends EventsType>(ev:T, listener:(...args:any[])=>void) : void;
+          // Explicit typed hooks (for convenience)
+        onCreated?: (workspace:Info) => void;
+        onActivated?: (workspace:Info) => void;
+        onUpdated?: (workspace:Info) => void;
+        onClosed?: (workspaceId:string) => void;
+        onTelemetry?: (telemetry:Telemetry) => void;
+          // AI-related
+        onAiContextSynced?: (context:OsAI.Context) => void;
+        OnAIInsight?: (insight:OsAI.Insight) => void;
+        onAISuggestedAction?: (action:OsAI.SuggestedAction) => void;
+          // Runtime bindings
+        onProcessBound? : (workspaceId: string, process:OSsys.Process.Info) => void;
+        onProcessUnbound? : (workspaceId: string, pid:number) => void;
+        onWindowBound? : (workspaceId: string, windowId:string) => void;
+        onWindowUnbound? : (workspaceId: string, windowId:string) => void;
+          // Error handling
+        onError?: (workspaceId?:string, error?:Error) => void;
+      }
+
+      // * 🤖 AI Bridge (Optional Extension)
+      export interface AIBridge {
+        onContextSynced?: (context:OsAI.Context) => void;
+        OnAIAnnotation?: (annotation:OsAI.Annotation) => void;
+        onAIInsight?: (insight:OsAI.Insight) => void;
+        onAISuggestedAction?: (action:OsAI.SuggestedAction) => void;
+      }
+
+      //🧠 Workspace Intelligence Controller
+      export interface IntelligenceController {
+        analyzeWorkspace(id:string): Promise<OsAI.Insight[]>;
+        recommendActions(id:string): Promise<OsAI.SuggestedAction[]>;
+        syncContext(id:string): Promise<OsAI.Context>;
+      }
+      /**
+       * --------------------------------------------------------------------------
+       * #🧩 Workspace Runtime Controller (Orchestrator)
+       * --------------------------------------------------------------------------
+       * #Bridges processes, windows, and AI context into unified runtime control.
+       * --------------------------------------------------------------------------
+       */
+      export interface RuntimeController {
+        currenctWorkspaceId : string;
+        activeWorkspaces:Map<string, Info>;
+        // core lifecycle
+        initialze(): Promise<void>;
+        shutdown(): Promise<void>;
+        switchWorkspace(id:string): Promise<boolean>;
+
+        // subsys
+        processManager: OSsys.Process.Controller;
+        // windowManager: OSsys.Window.Controller;
+        aiManager: OsAI.Controller;
+        aiBridge : AIBridge;
+        intelligence: IntelligenceController;
+
+        // state Persistence
+        saveState(id:string) : Promise<void>;
+        restoreState(id:string) : Promise<void>;
+
+        // Observation
+        telemetry(workspaceId:string): Promise<Telemetry>;
+        events?: Events;
+      }
     }
   }
-
-
 }
