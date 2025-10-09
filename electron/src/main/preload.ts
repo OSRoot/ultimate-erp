@@ -7,7 +7,7 @@ import type {
 } from './types/ipc-payloads';
 
 // Ensure Capacitor Electron runtime is included
-require('./runtime/electron-rt');
+require('./rt/electron-rt');
 
 console.log('[Preload] Loaded and exposing osystemapi');
 const winId: string = ipcRenderer.sendSync('get:winId');

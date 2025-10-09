@@ -163,7 +163,8 @@ declare global {
         list(): Promise<WindowMetadata[]>;
         get(winId: string): Promise<WindowMetadata | undefined>;
         telemetry(winId: string): Promise<Telemetry>;
-
+        workspaceManager?: Workspace.Controller;
+        processManager?: Process.Controller;
         // Optional event bindings
         events?: Events;
       }

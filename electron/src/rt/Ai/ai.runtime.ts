@@ -1,4 +1,4 @@
-import { OsAIOrchestrator } from "../../classes/Ai/ai.orchestrator";
+import { OsAIOrchestrator } from "../../main/classes/OsAI/ai.orchestrator";
 
 class OsAIRuntime {
 

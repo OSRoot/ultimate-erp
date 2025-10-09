@@ -321,6 +321,8 @@ declare global {
         revokeSession(sessionId: string): Promise<void>;
         revokeAllForUser(userId: string, reason?: RevocationReason | string): Promise<number>;
 
+        workspaceManager?: WindowManagement.Controller;
+        runtime?: OSRuntime.Controlling;
         // optional hooks for event subscription
         events?: Events;
       }

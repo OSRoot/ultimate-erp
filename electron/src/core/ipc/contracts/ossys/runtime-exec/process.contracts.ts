@@ -155,6 +155,7 @@ declare global {
         get(pid: number): Promise<Info | undefined>;
         telemetry(pid: number): Promise<Telemetry>;
         // 🔧 new addition — event subscription support
+        workspaceManager?: Workspace.Controller;
         events?: Events;
       }
       export type EventType =

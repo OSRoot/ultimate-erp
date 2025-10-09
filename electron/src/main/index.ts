@@ -7,8 +7,8 @@ import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
 
 import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from '../main/setup';
-import { WindowManager } from './classes/windows.manager';
-import { IPCMainHandler } from './classes/ipc.window.service';
+import { WindowManager } from './classes/windows/windows.manager';
+import { IPCMainHandler } from './classes/IPC/ipc.window.service';
 
 // ─────────────────────────────────────────────
 // 1. Handle uncaught/unhandled errors globally

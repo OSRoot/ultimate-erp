@@ -226,7 +226,7 @@ declare global {
         onAISuggestedAction?: (action:OsAI.SuggestedAction) => void;
       }
 
-      //🧠 Workspace Intelligence Controller
+      // 🧠 Workspace Intelligence Controller
       export interface IntelligenceController {
         analyzeWorkspace(id:string): Promise<OsAI.Insight[]>;
         recommendActions(id:string): Promise<OsAI.SuggestedAction[]>;
@@ -239,7 +239,7 @@ declare global {
        * #Bridges processes, windows, and AI context into unified runtime control.
        * --------------------------------------------------------------------------
        */
-      export interface RuntimeController {
+      export interface Controller {
         currenctWorkspaceId : string;
         activeWorkspaces:Map<string, Info>;
         // core lifecycle
@@ -248,8 +248,9 @@ declare global {
         switchWorkspace(id:string): Promise<boolean>;
 
         // subsys
-        processManager: OSsys.Process.Controller;
-        // windowManager: OSsys.Window.Controller;
+        processManager: Process.Controller;
+        windowManager: WindowManagement.Controller;
+        sessionManager?: Session.Controller;
         aiManager: OsAI.Controller;
         aiBridge : AIBridge;
         intelligence: IntelligenceController;
