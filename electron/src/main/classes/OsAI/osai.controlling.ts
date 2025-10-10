@@ -1,6 +1,8 @@
 import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
-
+//---------------------------------------------------------------------------------
+// 🧩 OsAI Controller
+//---------------------------------------------------------------------------------
 export class Controlling extends EventEmitter implements OsAI.Controller {
   private models = new Map<string, OsAI.ModelPackage>();
   private context : OsAI.Context;
@@ -8,7 +10,10 @@ export class Controlling extends EventEmitter implements OsAI.Controller {
   private insights: OsAI.Insight[] = [];
   private suggestions: OsAI.SuggestedAction[] = [];
   private awarenessInterval?: NodeJS.Timeout;
-  private AWARENESS_CYCLE_MS = 5000;
+  private AWARENESS_CYCLE_MS = 5000; // 5 seconds
+  //---------------------------------------------------------------------------------
+  //  Controller Constrctor
+  //---------------------------------------------------------------------------------
   constructor() {
     super();
     this.context = {
@@ -19,9 +24,60 @@ export class Controlling extends EventEmitter implements OsAI.Controller {
       memoryState:{},
       metadata:{},
       focusTargets:[],
+      recentQueries:[],
     };
+
+    this.startAwarenessCycle();
+  }
+  //---------------------------------------------------------------------------------
+  //  Controller Awareness
+  //---------------------------------------------------------------------------------
+  private startAwarenessCycle():void {
+    const loop = async () => {
+      this.evaluateAwareness();
+      await new Promise (r => setTimeout(r, this.AWARENESS_CYCLE_MS));
+      if (this.awarenessInterval) loop();
+    }
+    this.awarenessInterval = setTimeout(loop, this.AWARENESS_CYCLE_MS);
   }
 
+  private stopAwarenessCycle():void {
+    if (this.awarenessInterval) clearInterval(this.awarenessInterval);
+  }
+
+  private evaluateAwareness():void {
+    const activityScore =
+    (this.context.recentQueries?.length || 0) +
+    (this.models.size * 2 ) +
+    (this.annotations.size * 3);
+
+    let newLvl : OsAI.AwarenessLevel = 'low';
+    if (activityScore > 15) newLvl = 'critical';
+    else if (activityScore > 8) newLvl = 'high';
+    else if (activityScore > 3) newLvl = 'medium';
+    if (newLvl === 'critical' && this.AWARENESS_CYCLE_MS !== 2000) this.AWARENESS_CYCLE_MS = 2000;
+    else if (newLvl === 'low' && this.AWARENESS_CYCLE_MS !== 8000) this.AWARENESS_CYCLE_MS = 8000;
+
+    if (this.context.awarenessLevel !== newLvl) {
+      this.generateSuggestionsForLevel(newLvl);
+      this.context.awarenessLevel = newLvl;
+      this.context.lastUpdated = Date.now();
+      const insight: OsAI.Insight = {
+        id: randomUUID(),
+        summary:'Awareness level updated to '+this.context.awarenessLevel,
+        confidence: 0.9,
+        category:'awareness',
+        impactLevel: newLvl === 'critical' ? 'high' : 'medium',
+        generatedAt: Date.now(),
+        generatedBy: 'awareness-cycle',
+      }
+      this.insights.push(insight);
+      this.emit('awareness.updated', insight);
+    }
+  }
+  //---------------------------------------------------------------------------------
+  //  Controller Lifecycle
+  //---------------------------------------------------------------------------------
   async loadModel(modelId: string): Promise<OsAI.ModelPackage> {
     const model: OsAI.ModelPackage = {
       id: modelId,
@@ -85,7 +141,9 @@ export class Controlling extends EventEmitter implements OsAI.Controller {
     this.context = {...this.context, ...context};
     this.emit('context.updated', this.context);
   }
-
+  //---------------------------------------------------------------------------------
+  //  Controller Annotations
+  //---------------------------------------------------------------------------------
   async annotate(targetId: string, data: Partial<OsAI.Annotation>): Promise<OsAI.Annotation> {
     const annotation: OsAI.Annotation = {
       id: randomUUID(),
@@ -105,7 +163,9 @@ export class Controlling extends EventEmitter implements OsAI.Controller {
     return annotation;
   }
 
-
+  //---------------------------------------------------------------------------------
+  //  Controller Insights
+  //---------------------------------------------------------------------------------
   async summaryInsights(): Promise<OsAI.Insight[]> {
     const insight: OsAI.Insight = {
       id: randomUUID(),
@@ -119,5 +179,50 @@ export class Controlling extends EventEmitter implements OsAI.Controller {
     this.insights.push(insight);
     this.emit('insight.created', insight);
     return this.insights;
+  }
+
+
+  //---------------------------------------------------------------------------------
+  //  Controller Suggestions
+  //---------------------------------------------------------------------------------
+  private generateSuggestionsForLevel(level : OsAI.AwarenessLevel):void{
+    const suggestions:Record<OsAI.AwarenessLevel, OsAI.SuggestedAction[]> = {
+      low: [],
+      medium: [],
+      high: [{
+        id:randomUUID(),
+        label:'Optimize Memory Usage',
+        command:'os.memory.optimize',
+        confidence:0.9,
+        createdAt:Date.now(),
+        autoExecutable:true,
+        priority:2
+      }],
+      critical: [
+        {
+          id:randomUUID(),
+          label:'Reduce Process Load',
+          command:'os.process.throttle',
+          confidence:0.95,
+          createdAt:Date.now(),
+          autoExecutable:true,
+          priority:1
+        }
+      ],
+    };
+    const actions = suggestions[level];
+    if (actions && actions.length) {
+      this.suggestions.push(...actions);
+      actions.forEach(action => this.emit('suggestion.created', action));
+    }
+  }
+
+  public destroy(): void {
+    this.stopAwarenessCycle();
+    this.models.clear();
+    this.annotations.clear();
+    this.insights = [];
+    this.suggestions = [];
+    this.emit('controller.destroyed');
   }
 }

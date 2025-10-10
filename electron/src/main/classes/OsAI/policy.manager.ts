@@ -1,15 +1,33 @@
-export class PolicyManager{
-  private policies : OsAI.Policy.ExecutionPolicy = {allowInternet:false};
+// src/main/classes/OsAI/policy.manager.ts
+/**
+ * PolicyManager: simple execution policy checks.
+ * Extend to support rule sets, RBAC, model permissions, resource quotas, etc.
+ */
 
-  public setPolicy(policy:OsAI.Policy.ExecutionPolicy): void{
-    this.policies = policy;
+export class PolicyManager {
+  private policies: OsAI.Policy.ExecutionPolicy;
+
+  constructor(initial?: OsAI.Policy.ExecutionPolicy) {
+    this.policies = initial || { allowInternet: false, allowedModels: undefined } as any;
   }
 
+  setPolicy(p: OsAI.Policy.ExecutionPolicy) {
+    this.policies = { ...this.policies, ...p };
+  }
 
-  isAllowed(_req:OsAI.Inference.Request):OsAI.Policy.PolicyCheckResult{
-    if (this.policies.allowInternet && _req.mode ==='online'){
-      return {allowed:false, reason:'Internet not allowed'};
+  getPolicy() {
+    return { ...this.policies };
+  }
+
+  isAllowed(req: OsAI.Inference.Request): OsAI.Policy.PolicyCheckResult {
+    // Example checks
+    if (req.mode === 'online' && !this.policies.allowInternet) {
+      return { allowed: false, reason: 'Online execution disallowed by policy' };
     }
-    return {allowed:true};
+    if (this.policies.allowedModels && req.modelId && !this.policies.allowedModels.includes(req.modelId)) {
+      return { allowed: false, reason: 'Model not allowed by policy' };
+    }
+    // default
+    return { allowed: true };
   }
 }

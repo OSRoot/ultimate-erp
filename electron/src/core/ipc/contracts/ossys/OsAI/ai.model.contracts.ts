@@ -20,10 +20,16 @@ declare global {
       }
 
       export interface InstallPayload {
+        id                  : string;
+        name                : string;
         sourceUrl           : string; // file path or url
+        version?            : string;
         expectedChecksum?   : string;
+        signature?          : string;
+        sizeBytes?          : number;
         workspaceId?        : string;
         autoActivate?       : boolean;
+        metadata?           : Record<string, any>;
       }
 
       export interface UninstallPayload {

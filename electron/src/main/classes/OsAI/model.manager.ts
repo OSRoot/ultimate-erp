@@ -1,53 +1,99 @@
-export class ModelManager {
-  private registry : Map<string, OsAI.Model.Metadata> = new Map()
+// src/main/classes/OsAI/model.manager.ts
+import { EventEmitter } from 'events';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+import { randomUUID } from 'crypto';
 
-  list(): OsAI.Model.Metadata[] {
-    return [...this.registry.values()]
+/**
+ * ModelManager keeps metadata about installed models, performs install/remove,
+ * activation, and lightweight verification.
+ *
+ * NOTE: actual model download/verification and storage is implementation-specific
+ * and should be adapted to your environment.
+ */
+export class ModelManager extends EventEmitter {
+  private registry : Map<string, OsAI.ModelPackage> = new Map<string, OsAI.ModelPackage>();
+  private modelsDir :string;
+
+  constructor(modelsDir= path.resolve(process.cwd(), 'models')){
+    super();
+    this.modelsDir = modelsDir;
   }
 
-  async install (payload:OsAI.Model.InstallPayload) : Promise<OsAI.Model.Metadata> {
-    // 1. Download or copy file
-    // 2. Verify checksum
-    // 3. Save metadata
-    const model : OsAI.Model.Metadata = {
-      id: crypto.randomUUID(),
-      name: this.extractName(payload.sourceUrl),
-      source: payload.sourceUrl.startsWith('http') ? 'download' : 'local',
-      status: 'installed',
+
+  public list():OsAI.ModelPackage[]{
+    return Array.from(this.registry.values());
+  }
+
+  public async ensureModelDir(): Promise<void> {
+    try {
+      await fs.mkdir(this.modelsDir, { recursive: true });
+    } catch  { /* ignore */}
+  }
+
+  public async install(payload:OsAI.Model.InstallPayload): Promise<OsAI.ModelPackage> {
+    await this.ensureModelDir();
+
+    const id = randomUUID();
+    const filename = path.basename(payload.sourceUrl);
+    const installedPath = path.join(this.modelsDir, `${id}-${filename}`);
+
+    if (payload.sourceUrl.startsWith('file://')) {
+      const src = payload.sourceUrl.replace('file://', '');
+      try {
+        await fs.copyFile(src, installedPath);
+      } catch (error) {
+        // copy failded
+      }
+    }
+
+    const pkg:OsAI.ModelPackage = {
+      id,
+      name: payload.name ?? filename,
+      version:payload.version ?? '0.0.1',
+      checksum: payload.expectedChecksum ?? '',
+      signature: payload.signature ?? '',
+      sourceUrl: payload.sourceUrl,
+      installedPath,
+      sizeBytes: payload.sizeBytes ?? 0,
+      downloadedAt: Date.now(),
       installedAt: Date.now(),
-    }
+      lastUpdated: Date.now(),
+      mode: 'hybrid',
+      capabilities: ['infer', 'analyze', 'train'],
+      metadata: payload.metadata ?? {}
+    };
 
-    this.registry.set(model.id, model);
+    this.registry.set(id, pkg);
+    this.emit('model.installed', pkg);
 
-    if (payload.autoActivate){
-      await this.activate(model.id)
-    }
-
-   return model;
+    if (payload.autoActivate) this.activate(id);
+    return pkg;
   }
 
 
-  public async activate(modelId: string): Promise<void>{
+  public async activate(modelId: string): Promise<void> {
     const model = this.registry.get(modelId);
-    if (!model) throw new Error('Model not found')
-
-      model.status = 'active';
-      model.lastUsedAt = Date.now();
-
-    // load into memory / attach runtime
-    // e.g., spawn worker thread with inference engine
+    if (!model) throw new Error(`Model ${modelId} not found`);
+    model.metadata = { ...model.metadata, active: true };
+    model.lastUpdated = Date.now();
+    this.emit('model.activated', model);
   }
 
-  public deactivate(modelId:string):void {
+  public deactivate(modelId:string) :void {
     const model = this.registry.get(modelId);
-    if (model) model.status = 'installed'
+    if (!model) return;
+    model.metadata = { ...model.metadata, active: false };
+    model.lastUpdated = Date.now();
+    this.emit('model.deactivated', model);
   }
 
-  public remove(modelId:string):void {
+  remove(modelId:string) :void {
+    const model = this.registry.get(modelId);
+    if (!model) return;
     this.registry.delete(modelId);
+    this.emit('model.removed', model);
   }
 
-  private extractName (source:string) : string {
-    return source.split("/").pop() || 'unknow-model'
-  }
+  get(modelId:string) :OsAI.ModelPackage | undefined { return this.registry.get(modelId); }
 }

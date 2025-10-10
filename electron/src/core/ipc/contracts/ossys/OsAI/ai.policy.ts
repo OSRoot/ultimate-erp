@@ -24,6 +24,7 @@ declare global {
         allowScreenCapture?       : boolean;
         allowLocation?            : boolean;
         allowStorage?             : boolean;
+        allowedModels?            : string[];
         maxCpuPercentage?         : number;
         maxMemoryMB?              : number;
         autoApplyRecommendations? : boolean;
