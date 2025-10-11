@@ -1,66 +1,78 @@
-import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class OSELECTRON_SERVICE {
-  private isBrowser = false;
-  private windowFNS = window.osystemapi;
+  private readonly isBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-    if (this.isBrowser && (window as any).osystemapi) {
-      this.windowFNS = window.osystemapi;
+    this.isBrowser = isPlatformBrowser(platformId);
+
+    if (this.isBrowser && (window as any).OSsys) {
+      console.log('[OSELECTRON_SERVICE] Electron API detected.');
+    } else {
+      console.warn('[OSELECTRON_SERVICE] Running in browser mode — Electron API unavailable.');
     }
   }
 
-  // minimize window
+  /**
+   * --- WINDOW CONTROLS ---
+   */
   minimize(): Promise<void> | void {
-    console.log("Service: minimize()");
-    if (this.windowFNS) {
-      console.log("Service: found electronAPI");
-      return this.windowFNS.windowAction({ action: "minimize" });
-    } else {
-      console.warn("Service: electronAPI missing");
-    }
+    return this.invokeElectron(() => this.api.windowAction('minimize'), 'minimize');
   }
-  // toggle maximize
+
   toggleMaximize(): Promise<void> | void {
-    if (this.windowFNS) {
-      console.log("Angular → toggleMaximize()");
-      return this.windowFNS.windowAction({action:'maximize'});
+    return this.invokeElectron(() => this.api.windowAction('maximize'), 'toggleMaximize');
+  }
+
+  close(): Promise<void> | void {
+    return this.invokeElectron(() => this.api.windowAction('close'), 'close');
+  }
+
+  /**
+   * --- WINDOW MANAGEMENT ---
+   */
+  openChildWindow(id: string, route: string, options?: Record<string, any>): Promise<void> | void {
+    return this.invokeElectron(
+      () => this.api.openChildWindow({ id, route, options }),
+      'openChildWindow'
+    );
+  }
+
+  /**
+   * --- NOTIFICATIONS ---
+   */
+  showNotification(title: string, body: string): Promise<void> | void {
+    return this.invokeElectron(
+      () => this.api.showNotification({ title, body }),
+      'showNotification'
+    );
+  }
+
+  /**
+   * --- INTERNALS ---
+   */
+  private get api(): any {
+    return (this.isBrowser && (window as any).osystemapi)
+      ? (window as any).osystemapi
+      : null;
+  }
+
+  private invokeElectron<T>(fn: () => Promise<T> | void, action: string): Promise<T> | void {
+    const api = this.api;
+    console.log('Electron API:',this.api);
+
+    if (!api) {
+      console.warn(`[OSELECTRON_SERVICE] Skipped "${action}" — Electron API unavailable.`);
+      return;
+    }
+
+    try {
+      console.log(`[OSELECTRON_SERVICE] Executing action: ${action}`);
+      return fn();
+    } catch (error) {
+      console.error(`[OSELECTRON_SERVICE] Error executing "${action}":`, error);
     }
   }
-
-  close(): void {
-    if (this.windowFNS) {
-      console.log("Angular → close()");
-      this.windowFNS.windowAction({action:'close'});
-    } else {
-      console.warn("Electron API not available. Are you running in browser?");
-    }
-  }
-
-
-  openChildWindow(id: string, route: string): void {
-    if (this.windowFNS) {
-      console.log("Angular → openChildWindow()");
-      this.windowFNS.openChildWindow({id, route});
-    } else {
-      console.warn("Electron API not available. Are you running in browser?");
-    }
-
-    this.showNotification("Child Window", "The Route is " + route);
-  }
-
-  showNotification(title: string, body: string): void {
-  if (this.windowFNS) {
-    console.log("Angular → showNotification()");
-    this.windowFNS.showNotification({title, body});
-  } else {
-    console.warn("Electron API not available. Running in browser?");
-  }
-}
-
 }

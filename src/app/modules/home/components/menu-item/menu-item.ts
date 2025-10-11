@@ -1,43 +1,66 @@
-import { WindowActionPayload, WindowOpenPayload } from './../../../../../../electron/src/types/ipc-payloads';
-import { Component, model, OnInit } from '@angular/core';
-import { OSELECTRON_SERVICE } from '../../../../core/services/electron/electron.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import {
+  faRobot, faBrain, faChartLine, faFolderOpen, faShieldAlt, faEye,
+  faLightbulb, faTasks, faProjectDiagram, faCogs, faHistory,
+  faTerminal, faPlug, faExchangeAlt, faCog, faServer
+} from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-menu-item',
-  standalone: false,
   templateUrl: './menu-item.html',
-  styleUrl: './menu-item.scss'
+  styleUrls: ['./menu-item.scss'],
+  standalone:false
 })
 export class MenuItem implements OnInit {
-  faIcon = model<any>('')
+  @Input() icon!: string | IconDefinition;
+  @Input() label!: string;
+
   private soundsReady = false;
-  private tapSound !:HTMLAudioElement;
-  private windowFNS = window.osystemapi;
+  private tapSound!: HTMLAudioElement;
+
+  iconMap: Record<string, IconDefinition> = {
+    robot: faRobot,
+    brain: faBrain,
+    'chart-line': faChartLine,
+    'folder-open': faFolderOpen,
+    'shield-alt': faShieldAlt,
+    eye: faEye,
+    lightbulb: faLightbulb,
+    tasks: faTasks,
+    'project-diagram': faProjectDiagram,
+    cogs: faCogs,
+    history: faHistory,
+    terminal: faTerminal,
+    plug: faPlug,
+    'exchange-alt': faExchangeAlt,
+    cog: faCog,
+    server: faServer
+  };
+
+  get resolvedIcon(): IconDefinition | undefined {
+    if (typeof this.icon !== 'string') return this.icon;
+    return this.iconMap[this.icon] ?? faCog; // default fallback
+  }
+
   ngOnInit(): void {
-    void document.body.offsetHeight; // force reflow
     this.tapSound = new Audio('/assets/sounds/tap-tone.wav');
     this.tapSound.volume = 0.3;
 
     const onFirstInteraction = () => {
       this.soundsReady = true;
-      this.tapSound.play().catch(err => console.warn('Tap sound blocked', err));
-      // clean up listeners
+      this.tapSound.play().catch(() => {});
       document.removeEventListener('click', onFirstInteraction);
       document.removeEventListener('keydown', onFirstInteraction);
-    }
+    };
     document.addEventListener('click', onFirstInteraction);
     document.addEventListener('keydown', onFirstInteraction);
   }
 
-
-    playHoverSound() {
+  playHoverSound() {
     if (this.soundsReady && this.tapSound) {
-      this.tapSound.currentTime = 0; // restart so it feels responsive
+      this.tapSound.currentTime = 0;
       this.tapSound.play().catch(() => {});
     }
-  }
-
-  openChild(id:string, route:string) {
-    const payload:WindowOpenPayload = {id, route};
-    this.windowFNS.openChildWindow(payload);
   }
 }

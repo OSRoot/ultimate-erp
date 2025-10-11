@@ -1,0 +1,1 @@
+import{D as r,Sa as n,aa as t,db as m}from"./chunk-4MTHTT5R.js";var p=[],i=class o{static \u0275fac=function(e){return new(e||o)};static \u0275mod=t({type:o});static \u0275inj=r({imports:[m.forChild(p),m]})};var f=class o{static \u0275fac=function(e){return new(e||o)};static \u0275mod=t({type:o});static \u0275inj=r({imports:[n,i]})};export{f as AIModule};

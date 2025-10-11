@@ -126,10 +126,13 @@ const getMethods = (subsysKey: string, classKey: string): string[] => {
 // -----------------------------------------------------------------------------
 // 🧠 Expose to Renderer
 // -----------------------------------------------------------------------------
-contextBridge.exposeInMainWorld("OSsys", {
+contextBridge.exposeInMainWorld("osystemapi", {
   runtime: "electron",
   version: 3,
   getController,
   listAvailable,
   getMethods,
 });
+
+console.log(listAvailable());
+

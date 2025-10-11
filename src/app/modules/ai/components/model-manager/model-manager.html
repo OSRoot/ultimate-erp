@@ -1,0 +1,41 @@
+<div class="model-manager-container">
+  <div class="hud-frame">
+    <div class="hud-header">
+      <h2>AI Model Manager</h2>
+      <span class="hud-sub">Active Neural Models</span>
+    </div>
+
+    <div class="hud-content">
+      <div class="hud-section">
+        <h3>Available Models</h3>
+        <div class="model-list">
+          <div class="model-card" *ngFor="let model of models">
+            <div class="model-info">
+              <h4>{{ model.name }}</h4>
+              <p>{{ model.size }} • {{ model.status }}</p>
+            </div>
+            <button class="action-btn">Load</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-section">
+        <h3>Runtime Stats</h3>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="label">Active:</span>
+            <span class="value">{{ activeCount }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">VRAM Usage:</span>
+            <span class="value">{{ vramUsage }} GB</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Throughput:</span>
+            <span class="value">{{ throughput }} tok/s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

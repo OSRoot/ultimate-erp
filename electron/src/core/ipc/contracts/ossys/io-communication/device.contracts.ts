@@ -49,7 +49,7 @@ declare global {
         driverVersion?      : string;
         firmware?           : string;
         metadata?           : Record<string, any>;  // extensible metadata (AI or plugins)
-        aiAnnotations?      : OsAI.IAnnotation[];
+        aiAnnotations?      : OsAI.Annotation[];
         aiInsights?         : OsAI.Insight[];
         suggestedActions?   : OSsys.Common.SuggestedAction[];
       }
@@ -78,8 +78,8 @@ declare global {
         message             : string;
         timestamp           : number;
         metadata?           : Record<string, any>;
-        aiAnnotations?      : OSsys.AI.IAnnotation[];
-        aiInsights?         : OSsys.AI.Insight[];
+        aiAnnotations?      : OsAI.Annotation[];
+        aiInsights?         : OsAI.Insight[];
         suggestedActions?   : OSsys.Common.SuggestedAction[];
       }
 
@@ -102,7 +102,7 @@ declare global {
           ioWrite?          : number;   // Bytes/sec
         };
         metadata?           : Record<string, any>;  // AI annotations or plugin tags
-        aiAnnotations?      : OSsys.AI.IAnnotation[];
+        aiAnnotations?      : OsAI.Annotation[];
         suggestedActions?   : OSsys.Common.SuggestedAction[];
       }
 

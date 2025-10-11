@@ -1,7 +1,7 @@
 // electron/src/classes/windows.metadata.ts
 
 import { Rectangle } from "electron";
-import { WindowState, WindowType } from "../../shared/ipc.enums";
+import { WindowState, WindowType } from "../../../shared/enums/ipc.enums";
 
 
 /******************************************************************************************************

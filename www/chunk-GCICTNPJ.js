@@ -1,0 +1,1 @@
+import{C as a,M as t}from"./chunk-4MTHTT5R.js";var r=class e{_showHeader=t(!0);showHeader=this._showHeader.asReadonly();setHeader(o){this._showHeader.set(o)}static \u0275fac=function(s){return new(s||e)};static \u0275prov=a({token:e,factory:e.\u0275fac,providedIn:"root"})};export{r as a};

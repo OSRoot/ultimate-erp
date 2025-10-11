@@ -1,4 +1,5 @@
-import { EUpdateChannel, EUpdateType } from "../../../shared/ossys.enums";
+import { EUpdateChannel, EUpdateType } from "../../../../../shared/enums/ossys.enums";
+
   /**
    * --------------------------------------------------------------------------
    * Updates

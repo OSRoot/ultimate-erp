@@ -1,7 +1,6 @@
 // electron/src/classes/ipc.class.ts
 import { ipcMain, Notification, BrowserWindow } from 'electron';
 import { ElectronCapacitorApp } from '../../setup';
-import { WindowOpenPayload, NotificationPayload } from '../../types/ipc-payloads';
 import { WindowManager } from '../windows/windows.manager';
 
 export class IPCMainHandler {
@@ -56,7 +55,7 @@ export class IPCMainHandler {
    * Create child window with payload
    */
   private registerChildWindow(): void {
-    ipcMain.handle('window:openChild', (_event, payload: WindowOpenPayload) => {
+    ipcMain.handle('window:openChild', (_event, payload: any) => {
       console.log('[IPCMainHandler] window:openChild', payload);
       this.windowManager.createWindow(payload.id, {
         route: payload.route,
@@ -70,7 +69,7 @@ export class IPCMainHandler {
    * Show system notification
    */
   private registerNotification(): void {
-    ipcMain.handle('notification:show', (_event, payload: NotificationPayload) => {
+    ipcMain.handle('notification:show', (_event, payload: any) => {
       console.log('[IPCMainHandler] notification:show', payload);
 
       const notification = new Notification({

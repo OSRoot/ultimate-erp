@@ -1,4 +1,4 @@
-import { NotificationLevel } from "../../../../shared/ipc.enums";
+import { NotificationLevel } from "../../../../../shared/enums/ipc.enums";
 
       /**
        * --------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 import { BrowserWindow } from "electron";
 import { join } from "path";
-import { WindowOptions } from "../../types/window-options";
 import { WindowMetadataProps, WindowMetaData } from "./windows.metadata";
 import { WindowsPersistence } from "./windows.persistence";
+import { WindowState } from "../../../shared/enums/ipc.enums";
 
 
 /*******************************************************************************************************/
@@ -36,7 +36,7 @@ export class WindowManager {
  * @param id
  * @param options
 */
-  public createWindow(customId:string, options:WindowOptions={}): BrowserWindow {
+  public createWindow(customId:string, options:any={}): BrowserWindow {
     // prevent duplicate by customId
     const existing = this.findWindowByCustomId(customId);
     if (existing){ existing.focus(); return existing; }
@@ -58,7 +58,7 @@ export class WindowManager {
       customId,
       route: options.route,
       bounds: win.getBounds(),
-      state: 'active',
+      state: WindowState.ACTIVE,
       type: options.type,
       createdAt: Date.now(),
       lastFocus: Date.now(),
@@ -84,7 +84,7 @@ export class WindowManager {
     // Lifecycle events
     win.once('ready-to-show', ()=> win.show());
     win.on('close', ()=> {
-      meta.setState('closed');
+      meta.setState(WindowState.CLOSED);
       this.persistence.save();
     });
     win.on('resize', ()=> {
@@ -92,15 +92,15 @@ export class WindowManager {
       this.persistence.save();
     });
     win.on('focus', ()=> this.updateFocus(win.id));
-    win.on('hide', ()=> this.updateState(win.id, 'hidden'));
-    win.on('show', ()=> this.updateState(win.id, 'active'));
+    win.on('hide', ()=> this.updateState(win.id, WindowState.HIDDEN));
+    win.on('show', ()=> this.updateState(win.id, WindowState.ACTIVE));
     win.on('closed', ()=> this.removeWindow(win.id));
     return win;
   }
 /******************************************************************************************************/
   private updateFocus(id:number){
     const meta = this.metadata.get(`${id}`);
-    if (meta) { meta.lastFocus = Date.now(); meta.state = 'active'; }
+    if (meta) { meta.lastFocus = Date.now(); meta.state = WindowState.ACTIVE; }
   }
 /******************************************************************************************************/
   private updateState(id:number, state:WindowMetadataProps['state']){
@@ -111,7 +111,7 @@ export class WindowManager {
   private removeWindow(id:number){
     this.windows.delete(`${id}`);
     const meta = this.metadata.get(`${id}`);
-    if (meta) meta.state = 'closed';
+    if (meta) meta.state = WindowState.CLOSED;
   }
 
 /******************************************************************************************************

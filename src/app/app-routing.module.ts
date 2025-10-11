@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path:'test-component',
     component:TestComponent
+  },
+  {
+    path:'ai',
+    loadChildren: () => import('./modules/ai/ai.module').then(m => m.AIModule)
   }
 ];
 

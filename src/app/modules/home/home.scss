@@ -1,21 +1,83 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.home-container{
-  padding: 50px 16px;
+.home-container {
   width: 100%;
+  height: 100vh; // full viewport height
+  padding: 70px 30px 16px;
+  padding-inline-end: 0 ;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #0e1116;
+  color: #f3f3f3;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden; // ❗ Prevent global scrolling
 
-
-}
-  .home-content{
+  .home-content {
     width: 100%;
-    app-menu-item{
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      grid-gap: 16px;
+    max-width: 100vw;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+    height: calc(100vh - 100px); // subtract padding/header height
+
+    .sys-profile-view {
+      flex-shrink: 0;
+      overflow-y: auto; // scroll internally if tall
+      max-height: 100%;
+      border-radius: 16px;
+      scrollbar-gutter: stable;
+
+      h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #00d4ff;
+      }
+    }
+
+    .items {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      max-height: 100%;
+      overflow-y: auto; // internal scroll only here
+      padding-right: 8px; // space for scrollbar
+
+      .menu-section {
+        transition: 0.3s ease all;
+
+        h3 {
+          font-size: 1.2rem;
+          color: #00d4ff;
+          font-weight: 500;
+          margin-block: 16px;
+          letter-spacing: 0.5px;
+          border-left: 3px solid #00d4ff;
+          padding-left: 12px;
+          text-transform: uppercase;
+        }
+
+        .menu-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          gap: 20px;
+        }
+      }
     }
   }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}

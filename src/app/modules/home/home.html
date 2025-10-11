@@ -1,7 +1,82 @@
-<div class="home-container">
-  <div class="home-content">
+<div class="home-container" >
+  <div class="home-content" >
+    <div class="sys-profile-view">
+      <app-profile-view></app-profile-view>
+    </div>
+
     <div class="items">
-      <app-menu-item [faIcon]="faHome"></app-menu-item>
+
+      <div class="menu-section">
+      <h3>AI Runtime</h3>
+      <div class="menu-grid">
+        <app-menu-item icon="robot" label="Model Manager" (click)="open('model')"></app-menu-item>
+        <app-menu-item icon="brain" label="Inference Engine" (click)="open('inference')"></app-menu-item>
+        <app-menu-item icon="chart-line" label="Training Jobs" (click)="open('training')"></app-menu-item>
+        <app-menu-item icon="folder-open" label="Context Manager" (click)="open('context')"></app-menu-item>
+        <app-menu-item icon="shield-alt" label="Policy Manager" (click)="open('policy')"></app-menu-item>
+        <app-menu-item icon="cloud" label="Model Hosting" (click)="open('hosting')"></app-menu-item>
+        <app-menu-item icon="tachometer-alt" label="Performance Monitor" (click)="open('runtime-performance')"></app-menu-item>
+      </div>
+
+        <h3>System Intelligence</h3>
+        <div class="menu-grid">
+          <app-menu-item icon="eye" label="Awareness Monitor" (click)="open('awareness')"></app-menu-item>
+          <app-menu-item icon="user-astronaut" label="Agents Manager" (click)="open('agents')"></app-menu-item>
+          <app-menu-item icon="comments" label="Dialogue Engine" (click)="open('dialogue')"></app-menu-item>
+          <app-menu-item icon="lightbulb" label="Insights" (click)="open('insights')"></app-menu-item>
+          <app-menu-item icon="tasks" label="Suggestions" (click)="open('suggestions')"></app-menu-item>
+          <app-menu-item icon="network-wired" label="Memory Graph" (click)="open('memory')"></app-menu-item>
+        </div>
+
+        <h3>Workspace</h3>
+        <div class="menu-grid">
+          <app-menu-item icon="project-diagram" label="Workspaces" (click)="open('workspaces')"></app-menu-item>
+          <app-menu-item icon="cogs" label="Processes" (click)="open('processes')"></app-menu-item>
+          <app-menu-item icon="history" label="Sessions" (click)="open('sessions')"></app-menu-item>
+          <app-menu-item icon="clipboard-list" label="Tasks Manager" (click)="open('tasks')"></app-menu-item>
+          <app-menu-item icon="hdd" label="Storage Manager" (click)="open('storage')"></app-menu-item>
+          <app-menu-item icon="database" label="Data Sources" (click)="open('datasources')"></app-menu-item>
+        </div>
+
+        <h3>Windows Management</h3>
+        <div class="menu-grid">
+          <app-menu-item icon="window-maximize" label="Layout Manager" (click)="open('layout-manager')"></app-menu-item>
+          <app-menu-item icon="columns" label="Docking Zones" (click)="open('docking')"></app-menu-item>
+          <app-menu-item icon="clone" label="Multi-Window Sync" (click)="open('multiwindow')"></app-menu-item>
+          <app-menu-item icon="layer-group" label="Overlay Layers" (click)="open('overlays')"></app-menu-item>
+          <app-menu-item icon="expand-arrows-alt" label="Window Controls" (click)="open('window-controls')"></app-menu-item>
+          <app-menu-item icon="eye-slash" label="HUD Visibility" (click)="open('hud')"></app-menu-item>
+          <app-menu-item icon="palette" label="Visual Modes" (click)="open('visual-modes')"></app-menu-item>
+        </div>
+
+        <h3>Developer Tools</h3>
+        <div class="menu-grid">
+          <app-menu-item icon="terminal" label="Terminal" (click)="open('diagnostics')"></app-menu-item>
+          <app-menu-item icon="plug" label="Plugins" (click)="open('plugins')"></app-menu-item>
+          <app-menu-item icon="code" label="API Console" (click)="open('api-console')"></app-menu-item>
+          <app-menu-item icon="exchange-alt" label="IPC Monitor" (click)="open('ipc')"></app-menu-item>
+          <app-menu-item icon="bug" label="Error Logs" (click)="open('logs')"></app-menu-item>
+          <app-menu-item icon="vial" label="Experimental Lab" (click)="open('lab')"></app-menu-item>
+        </div>
+
+        <h3>System Management</h3>
+        <div class="menu-grid">
+          <app-menu-item icon="server" label="Runtime Config" (click)="open('runtime-config')"></app-menu-item>
+          <app-menu-item icon="sliders-h" label="Control Panel" (click)="open('control')"></app-menu-item>
+          <app-menu-item icon="lock" label="Access Control" (click)="open('security')"></app-menu-item>
+          <app-menu-item icon="sync" label="System Updates" (click)="open('updates')"></app-menu-item>
+          <app-menu-item icon="power-off" label="Shutdown / Reboot" (click)="open('power')"></app-menu-item>
+        </div>
+
+        <h3>Settings</h3>
+        <div class="menu-grid">
+          <app-menu-item icon="user-cog" label="User Profile" (click)="open('user-profile')"></app-menu-item>
+          <app-menu-item icon="cog" label="Preferences" (click)="open('preferences')"></app-menu-item>
+          <app-menu-item icon="bell" label="Notifications" (click)="open('notifications')"></app-menu-item>
+          <app-menu-item icon="language" label="Localization" (click)="open('localization')"></app-menu-item>
+        </div>
+
+
     </div>
   </div>
 </div>
